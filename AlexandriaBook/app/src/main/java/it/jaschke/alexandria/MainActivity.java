@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
+
 import it.jaschke.alexandria.api.Callback;
 
 
@@ -45,6 +47,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             setContentView(R.layout.activity_main_tablet);
         }else {
             setContentView(R.layout.activity_main);
+        }
+
+        if (savedInstanceState == null) {
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
         }
 
         messageReciever = new MessageReciever();
