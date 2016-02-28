@@ -35,6 +35,7 @@
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
 
     <string name="no_author_found">"Author info not Available!"</string>
+    <string name="you_are_offline">"You are Offline!"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="about_text">This application gets book information from a Google API. All titles, cover images, and author information come from there.
