@@ -129,7 +129,13 @@ public class AddBook extends Fragment
         if (savedInstanceState != null) {
             seteArticleNumber(savedInstanceState.getString(EAN_CONTENT));
             eArticleNumberEditText.setText(geteArticleNumber());
-            eArticleNumberEditText.setHint("");
+            if (geteArticleNumber().isEmpty()){
+                eArticleNumberEditText.setHint(R.string.input_hint);
+                Log.e(LOG_TAG, "onViewStateRestored : No Value stored in Bundle! Hint set!");
+            }else {
+                eArticleNumberEditText.setHint("");
+                Log.e(LOG_TAG, "onViewStateRestored : Value restored from Bundle! Hint not required!");
+            }
         }
     }
 
@@ -184,6 +190,8 @@ public class AddBook extends Fragment
 
     private void cleareArticleNumberText() {
         eArticleNumberEditText.setText("");
+        eArticleNumberEditText.setHint(R.string.input_hint);
+        Log.e(LOG_TAG, "cleareArticleNumberText : EAN Hint is Required!");
     }
 
     private void seteArticleNumber(String eArticleNumber) {
