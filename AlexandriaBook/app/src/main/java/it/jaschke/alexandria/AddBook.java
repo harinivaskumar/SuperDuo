@@ -56,7 +56,7 @@ public class AddBook extends Fragment
     private TextView bookTitle, bookSubTitle, author, category;
     private EditText eArticleNumberEditText;
     private ImageView bookCoverImage;
-    private Button scanButton, saveButton, deleteButton;
+    private Button scanButton;
 
     public AddBook() {
     }
@@ -72,8 +72,6 @@ public class AddBook extends Fragment
         category = (TextView) rootView.findViewById(R.id.categories);
         bookCoverImage = (ImageView) rootView.findViewById(R.id.bookCover);
         scanButton = (Button) rootView.findViewById(R.id.scan_button);
-        saveButton = (Button) rootView.findViewById(R.id.save_button);
-        deleteButton = (Button) rootView.findViewById(R.id.delete_button);
 
         eArticleNumberEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,8 +97,8 @@ public class AddBook extends Fragment
         });
 
         scanButton.setOnClickListener(this);
-        saveButton.setOnClickListener(this);
-        deleteButton.setOnClickListener(this);
+        (rootView.findViewById(R.id.save_button)).setOnClickListener(this);
+        (rootView.findViewById(R.id.delete_button)).setOnClickListener(this);
 
         if (savedInstanceState != null) {
             seteArticleNumber(savedInstanceState.getString(EAN_CONTENT));
@@ -311,8 +309,8 @@ public class AddBook extends Fragment
         }
 
         bookCoverImage.setVisibility(View.VISIBLE);
-        saveButton.setVisibility(View.VISIBLE);
-        deleteButton.setVisibility(View.VISIBLE);
+        (rootView.findViewById(R.id.save_button)).setVisibility(View.VISIBLE);
+        (rootView.findViewById(R.id.delete_button)).setVisibility(View.VISIBLE);
     }
 
     private void clearUIFields() {
@@ -322,7 +320,7 @@ public class AddBook extends Fragment
         category.setText("");
 
         bookCoverImage.setVisibility(View.INVISIBLE);
-        saveButton.setVisibility(View.INVISIBLE);
-        deleteButton.setVisibility(View.INVISIBLE);
+        (rootView.findViewById(R.id.save_button)).setVisibility(View.INVISIBLE);
+        (rootView.findViewById(R.id.delete_button)).setVisibility(View.INVISIBLE);
     }
 }
