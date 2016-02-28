@@ -8,51 +8,56 @@ import android.util.Log;
 /**
  * Created by saj on 22/12/14.
  */
-public class DbHelper extends SQLiteOpenHelper {
+public class BookDbHelper extends SQLiteOpenHelper {
+
+    private final String LOG_TAG = BookDbHelper.class.getSimpleName();
 
     private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "alexandria.db";
 
-    public DbHelper(Context context) {
+    public BookDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        final String SQL_CREATE_BOOK_TABLE = "CREATE TABLE " + AlexandriaContract.BookEntry.TABLE_NAME + " ("+
+        final String SQL_CREATE_BOOK_TABLE = "CREATE TABLE " + AlexandriaContract.BookEntry.TABLE_NAME + " (" +
                 AlexandriaContract.BookEntry._ID + " INTEGER PRIMARY KEY," +
                 AlexandriaContract.BookEntry.TITLE + " TEXT NOT NULL," +
                 AlexandriaContract.BookEntry.SUBTITLE + " TEXT ," +
                 AlexandriaContract.BookEntry.DESC + " TEXT ," +
                 AlexandriaContract.BookEntry.IMAGE_URL + " TEXT, " +
-                "UNIQUE ("+ AlexandriaContract.BookEntry._ID +") ON CONFLICT IGNORE)";
+                "UNIQUE (" + AlexandriaContract.BookEntry._ID + ") ON CONFLICT IGNORE)";
 
-        final String SQL_CREATE_AUTHOR_TABLE = "CREATE TABLE " + AlexandriaContract.AuthorEntry.TABLE_NAME + " ("+
+        /* We should have unique Row for Author Entry */
+
+        final String SQL_CREATE_AUTHOR_TABLE = "CREATE TABLE " + AlexandriaContract.AuthorEntry.TABLE_NAME + " (" +
                 AlexandriaContract.AuthorEntry._ID + " INTEGER," +
                 AlexandriaContract.AuthorEntry.AUTHOR + " TEXT," +
                 " FOREIGN KEY (" + AlexandriaContract.AuthorEntry._ID + ") REFERENCES " +
-                AlexandriaContract.BookEntry.TABLE_NAME + " (" + AlexandriaContract.BookEntry._ID + "))";
+                AlexandriaContract.BookEntry.TABLE_NAME + " (" + AlexandriaContract.BookEntry._ID + ")," +
+                "UNIQUE (" + AlexandriaContract.AuthorEntry._ID + ") ON CONFLICT IGNORE)";
 
-        final String SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE " + AlexandriaContract.CategoryEntry.TABLE_NAME + " ("+
+        /* We should have unique Row for Category Entry */
+
+        final String SQL_CREATE_CATEGORY_TABLE = "CREATE TABLE " + AlexandriaContract.CategoryEntry.TABLE_NAME + " (" +
                 AlexandriaContract.CategoryEntry._ID + " INTEGER," +
                 AlexandriaContract.CategoryEntry.CATEGORY + " TEXT," +
                 " FOREIGN KEY (" + AlexandriaContract.CategoryEntry._ID + ") REFERENCES " +
-                AlexandriaContract.BookEntry.TABLE_NAME + " (" + AlexandriaContract.BookEntry._ID + "))";
+                AlexandriaContract.BookEntry.TABLE_NAME + " (" + AlexandriaContract.BookEntry._ID + ")," +
+                "UNIQUE (" + AlexandriaContract.CategoryEntry._ID + ") ON CONFLICT IGNORE)";
 
-
-        Log.d("sql-statments",SQL_CREATE_BOOK_TABLE);
-        Log.d("sql-statments",SQL_CREATE_AUTHOR_TABLE);
-        Log.d("sql-statments",SQL_CREATE_CATEGORY_TABLE);
+        Log.d(LOG_TAG, SQL_CREATE_BOOK_TABLE);
+        Log.d(LOG_TAG, SQL_CREATE_AUTHOR_TABLE);
+        Log.d(LOG_TAG, SQL_CREATE_CATEGORY_TABLE);
 
         db.execSQL(SQL_CREATE_BOOK_TABLE);
         db.execSQL(SQL_CREATE_AUTHOR_TABLE);
         db.execSQL(SQL_CREATE_CATEGORY_TABLE);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 }

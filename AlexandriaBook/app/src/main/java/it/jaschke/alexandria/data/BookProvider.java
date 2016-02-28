@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * Created by saj on 24/12/14.
@@ -29,7 +28,7 @@ public class BookProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
-    private DbHelper dbHelper;
+    private BookDbHelper bookDbHelper;
 
     private static final SQLiteQueryBuilder bookFull;
 
@@ -63,7 +62,7 @@ public class BookProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        dbHelper = new DbHelper(getContext());
+        bookDbHelper = new BookDbHelper(getContext());
         return true;
 
     }
@@ -73,7 +72,7 @@ public class BookProvider extends ContentProvider {
         Cursor retCursor;
         switch (uriMatcher.match(uri)) {
             case BOOK:
-                retCursor=dbHelper.getReadableDatabase().query(
+                retCursor= bookDbHelper.getReadableDatabase().query(
                         AlexandriaContract.BookEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -84,7 +83,7 @@ public class BookProvider extends ContentProvider {
                 );
                 break;
             case AUTHOR:
-                retCursor=dbHelper.getReadableDatabase().query(
+                retCursor= bookDbHelper.getReadableDatabase().query(
                         AlexandriaContract.AuthorEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -95,7 +94,7 @@ public class BookProvider extends ContentProvider {
                 );
                 break;
             case CATEGORY:
-                retCursor=dbHelper.getReadableDatabase().query(
+                retCursor= bookDbHelper.getReadableDatabase().query(
                         AlexandriaContract.CategoryEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -106,7 +105,7 @@ public class BookProvider extends ContentProvider {
                 );
                 break;
             case BOOK_ID:
-                retCursor=dbHelper.getReadableDatabase().query(
+                retCursor= bookDbHelper.getReadableDatabase().query(
                         AlexandriaContract.BookEntry.TABLE_NAME,
                         projection,
                         AlexandriaContract.BookEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
@@ -117,7 +116,7 @@ public class BookProvider extends ContentProvider {
                 );
                 break;
             case AUTHOR_ID:
-                retCursor=dbHelper.getReadableDatabase().query(
+                retCursor= bookDbHelper.getReadableDatabase().query(
                         AlexandriaContract.AuthorEntry.TABLE_NAME,
                         projection,
                         AlexandriaContract.AuthorEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
@@ -128,7 +127,7 @@ public class BookProvider extends ContentProvider {
                 );
                 break;
             case CATEGORY_ID:
-                retCursor=dbHelper.getReadableDatabase().query(
+                retCursor= bookDbHelper.getReadableDatabase().query(
                         AlexandriaContract.CategoryEntry.TABLE_NAME,
                         projection,
                         AlexandriaContract.CategoryEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
@@ -147,7 +146,7 @@ public class BookProvider extends ContentProvider {
                     "group_concat(DISTINCT " + AlexandriaContract.AuthorEntry.TABLE_NAME+ "."+ AlexandriaContract.AuthorEntry.AUTHOR +") as " + AlexandriaContract.AuthorEntry.AUTHOR,
                     "group_concat(DISTINCT " + AlexandriaContract.CategoryEntry.TABLE_NAME+ "."+ AlexandriaContract.CategoryEntry.CATEGORY +") as " + AlexandriaContract.CategoryEntry.CATEGORY
                 };
-                retCursor = bookFull.query(dbHelper.getReadableDatabase(),
+                retCursor = bookFull.query(bookDbHelper.getReadableDatabase(),
                         bfd_projection,
                         AlexandriaContract.BookEntry.TABLE_NAME + "." + AlexandriaContract.BookEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
                         selectionArgs,
@@ -162,7 +161,7 @@ public class BookProvider extends ContentProvider {
                         "group_concat(DISTINCT " + AlexandriaContract.AuthorEntry.TABLE_NAME+ "."+ AlexandriaContract.AuthorEntry.AUTHOR + ") as " + AlexandriaContract.AuthorEntry.AUTHOR,
                         "group_concat(DISTINCT " + AlexandriaContract.CategoryEntry.TABLE_NAME+ "."+ AlexandriaContract.CategoryEntry.CATEGORY +") as " + AlexandriaContract.CategoryEntry.CATEGORY
                 };
-                retCursor = bookFull.query(dbHelper.getReadableDatabase(),
+                retCursor = bookFull.query(bookDbHelper.getReadableDatabase(),
                         bf_projection,
                         null,
                         selectionArgs,
@@ -207,7 +206,7 @@ public class BookProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        final SQLiteDatabase db = bookDbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
         Uri returnUri;
         switch (match) {
@@ -245,7 +244,7 @@ public class BookProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        final SQLiteDatabase db = bookDbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
         int rowsDeleted;
         switch (match) {
@@ -279,7 +278,7 @@ public class BookProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        final SQLiteDatabase db = bookDbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
         int rowsUpdated;
         switch (match) {

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import it.jaschke.alexandria.data.AlexandriaContract;
-import it.jaschke.alexandria.data.DbHelper;
+import it.jaschke.alexandria.data.BookDbHelper;
 
 /**
  * Created by saj on 23/12/14.
@@ -26,8 +26,8 @@ public class TestDb extends AndroidTestCase {
     public final static String category = "Computers";
 
     public void testCreateDb() throws Throwable {
-        mContext.deleteDatabase(DbHelper.DATABASE_NAME);
-        SQLiteDatabase db = new DbHelper(
+        mContext.deleteDatabase(BookDbHelper.DATABASE_NAME);
+        SQLiteDatabase db = new BookDbHelper(
                 this.mContext).getWritableDatabase();
         assertEquals(true, db.isOpen());
         db.close();
@@ -35,7 +35,7 @@ public class TestDb extends AndroidTestCase {
 
     public void testInsertReadDb() {
 
-        DbHelper dbHelper = new DbHelper(mContext);
+        BookDbHelper dbHelper = new BookDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = getBookValues();
