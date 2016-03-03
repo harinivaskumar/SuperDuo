@@ -12,6 +12,7 @@ import java.io.InputStream;
  * Created by saj on 11/01/15.
  */
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+    private final String LOG_TAG = DownloadImage.class.getSimpleName();
     ImageView bmImage;
 
     public DownloadImage(ImageView bmImage) {
@@ -25,8 +26,8 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
             InputStream in = new java.net.URL(urlDisplay).openStream();
             bookCover = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage());
+            //e.printStackTrace();
         }
         return bookCover;
     }

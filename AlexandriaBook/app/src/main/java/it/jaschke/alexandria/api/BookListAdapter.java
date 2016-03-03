@@ -20,6 +20,8 @@ import it.jaschke.alexandria.services.DownloadImage;
  */
 public class BookListAdapter extends CursorAdapter {
 
+    private final String LOG_TAG = BookListAdapter.class.getSimpleName();
+
     public static class ViewHolder {
         public final ImageView bookCover;
         public final TextView bookTitle;
@@ -49,9 +51,12 @@ public class BookListAdapter extends CursorAdapter {
 
         String imgUrl = cursor.getString(
                 cursor.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        if ((imgUrl != null) &&
-                (Patterns.WEB_URL.matcher(imgUrl).matches())){
-            new DownloadImage(viewHolder.bookCover).execute(imgUrl);
+
+        if (Utility.isNetworkAvailable(context, null, LOG_TAG)) {
+            if ((imgUrl != null) &&
+                    (Patterns.WEB_URL.matcher(imgUrl).matches())) {
+                new DownloadImage(viewHolder.bookCover).execute(imgUrl);
+            }
         }else{
             viewHolder.bookCover.setImageResource(R.drawable.ic_launcher);
         }

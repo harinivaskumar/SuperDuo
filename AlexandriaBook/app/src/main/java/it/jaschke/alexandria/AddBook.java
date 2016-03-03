@@ -1,12 +1,9 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -28,6 +25,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import it.jaschke.alexandria.api.Utility;
 import it.jaschke.alexandria.barcode.BarcodeCaptureActivity;
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
@@ -92,7 +90,7 @@ public class AddBook extends Fragment
                 seteArticleNumber(editableString.toString());
 
                 if (checkAndValidateEArticleNumber()) {
-                    if (isNetworkAvailable()) {
+                    if (Utility.isNetworkAvailable(getContext(), getView(), LOG_TAG)) {
                         startBookService(BookService.FETCH_BOOK);
                         AddBook.this.restartLoader();
                     }
@@ -186,19 +184,6 @@ public class AddBook extends Fragment
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    // Added from StackOverFlow
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
-            return true;
-        }
-        Log.e(LOG_TAG, "No Internet Connection available.");
-        Snackbar.make(getView(), R.string.you_are_offline, Snackbar.LENGTH_SHORT).show();
-        return false;
     }
 
     private Editable geteArticleNumberFromEditText() {
@@ -325,11 +310,13 @@ public class AddBook extends Fragment
             author.setTextColor(Color.RED);
         }
 
-        if ((fieldValues[BOOK_COVER_ID] != null) &&
-                (Patterns.WEB_URL.matcher(fieldValues[BOOK_COVER_ID]).matches()))
-        {
-            new DownloadImage(bookCoverImage).execute(fieldValues[BOOK_COVER_ID]);
+        if (Utility.isNetworkAvailable(getContext(), getView(), LOG_TAG)) {
+            if ((fieldValues[BOOK_COVER_ID] != null) &&
+                    (Patterns.WEB_URL.matcher(fieldValues[BOOK_COVER_ID]).matches())) {
+                new DownloadImage(bookCoverImage).execute(fieldValues[BOOK_COVER_ID]);
+            }
         }else {
+            Log.d(LOG_TAG, "updateUIFields: Image URL is Empty! Load default Image");
             bookCoverImage.setImageResource(R.drawable.ic_launcher);
         }
 
