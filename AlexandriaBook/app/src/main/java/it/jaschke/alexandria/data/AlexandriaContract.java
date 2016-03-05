@@ -7,7 +7,6 @@ package it.jaschke.alexandria.data;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 public class AlexandriaContract{
 
@@ -48,7 +47,6 @@ public class AlexandriaContract{
         public static Uri buildFullBookUri(long id) {
             return ContentUris.withAppendedId(FULL_CONTENT_URI, id);
         }
-
     }
 
     public static final class AuthorEntry implements BaseColumns {
@@ -83,6 +81,5 @@ public class AlexandriaContract{
         public static Uri buildCategoryUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
-
     }
 }
