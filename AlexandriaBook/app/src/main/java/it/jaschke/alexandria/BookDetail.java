@@ -24,7 +24,6 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
 
-
 public class BookDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = BookDetail.class.getSimpleName();
@@ -43,7 +42,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +65,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         });
         return rootView;
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

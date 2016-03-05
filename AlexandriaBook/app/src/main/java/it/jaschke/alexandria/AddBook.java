@@ -158,7 +158,7 @@ public class AddBook extends Fragment
                 startBookService(BookService.DELETE_BOOK);
 
                 cleareArticleNumberText();
-                Snackbar.make(getView(), "Book Deleted Successfully!", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getView(), getString(R.string.barcode_book_deleted), Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
