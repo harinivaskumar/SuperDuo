@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,7 @@ public class ScoresAdapter extends CursorAdapter {
         View newView = LayoutInflater.from(context).inflate(R.layout.scores_list_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(newView);
         newView.setTag(viewHolder);
-        Log.v(LOG_TAG, "new View inflated");
+//        Log.v(LOG_TAG, "new View inflated");
         return newView;
     }
 
@@ -51,7 +50,7 @@ public class ScoresAdapter extends CursorAdapter {
         mViewHolder = (ViewHolder) oldView.getTag();
         populateViewHolderWithInformation(cursor);
 
-        Log.v(LOG_TAG, "DetailedMatchId - " + String.valueOf(mDetailedMatchId));
+        //Log.v(LOG_TAG, "DetailedMatchId - " + String.valueOf(mDetailedMatchId));
 
         ViewGroup containerVG = (ViewGroup) oldView.findViewById(R.id.details_fragment_container);
 
@@ -84,16 +83,17 @@ public class ScoresAdapter extends CursorAdapter {
                 cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
 
         mViewHolder.setMatchId(cursor.getDouble(COL_ID));
-
+/*
         Log.v(LOG_TAG, "Home Name - " + mViewHolder.homeName.getText() +
                 " Vs. Away Name - " + mViewHolder.awayName.getText() +
                 " & Match Id " + String.valueOf(mViewHolder.getMatchId()));
+*/
     }
 
     private void addNewViewToViewGroup(ViewGroup containerVG, final Context context, Cursor cursor){
         LayoutInflater systemService = (LayoutInflater) context.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View newView = systemService.inflate(R.layout.detail_fragment, null);
+        View newView = systemService.inflate(R.layout.matchdetail_fragment, null);
 
         containerVG.addView(newView, 0,
                 new ViewGroup.LayoutParams(

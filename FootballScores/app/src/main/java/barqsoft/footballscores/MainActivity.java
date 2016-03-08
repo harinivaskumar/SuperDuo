@@ -12,21 +12,21 @@ public class MainActivity extends ActionBarActivity {
 
     private final String SELECTED_MATCH_ID = "Selected Match ID";
     private final String CURRENT_FRAGMENT_ID = "Current Fragment ID";
-    private final String VISIBLE_FRAGMENT = "Visible Fragment";
+    private final String PAGER_FRAGMENT = "Pager Fragment";
 
-    private PagerFragment mVisibleFragment;
     //By Default : 'Today' Fragment is shown to the user
     private static int currentFragmentId = 2;
     private static double selectedMatchId;
+    private ViewPagerFragment mViewPagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null){
-            mVisibleFragment = new PagerFragment();
+            mViewPagerFragment = new ViewPagerFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, mVisibleFragment)
+                    .add(R.id.container, mViewPagerFragment)
                     .commit();
         }
     }
@@ -50,12 +50,12 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outInstanceState) {
-        setCurrentFragmentId(mVisibleFragment.mPagerHandler.getCurrentItem());
+        setCurrentFragmentId(mViewPagerFragment.getPagerHandler().getCurrentItem());
 
         outInstanceState.putInt(CURRENT_FRAGMENT_ID, getCurrentFragmentId());
         outInstanceState.putDouble(SELECTED_MATCH_ID, getSelectedMatchId());
         getSupportFragmentManager().
-                putFragment(outInstanceState, VISIBLE_FRAGMENT, mVisibleFragment);
+                putFragment(outInstanceState, PAGER_FRAGMENT, mViewPagerFragment);
         super.onSaveInstanceState(outInstanceState);
 
         Log.v(LOG_TAG, "onSaveInstanceState : Stored  - " +
@@ -67,8 +67,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         setCurrentFragmentId(savedInstanceState.getInt(CURRENT_FRAGMENT_ID));
         setSelectedMatchId(savedInstanceState.getDouble(SELECTED_MATCH_ID));
-        mVisibleFragment = (PagerFragment) getSupportFragmentManager().
-                getFragment(savedInstanceState, VISIBLE_FRAGMENT);
+        mViewPagerFragment = (ViewPagerFragment) getSupportFragmentManager().
+                getFragment(savedInstanceState, PAGER_FRAGMENT);
         super.onRestoreInstanceState(savedInstanceState);
 
         Log.v(LOG_TAG, "onRestoreInstanceState : Restored  - " +
