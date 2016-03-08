@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,21 +34,30 @@ public class ViewPagerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.viewpager_fragment, container, false);
 
         for (int index = 0; index < NUM_PAGES; index++) {
-            Date date = new Date(System.currentTimeMillis() + ((index - 2) * 86400000));
-//            Log.d(LOG_TAG, "TimeInMillis[" + index + "] - " + (System.currentTimeMillis() + ((index - 2) * 86400000)) +
-//                    " and getTime() - " + date.getTime());
-//            SimpleDateFormat dateFormatFull = new SimpleDateFormat(DATE_FORMAT_1);
+            Date date = new Date(getRequiredTimeInMillis(index));
+            SimpleDateFormat dateFormatFull = new SimpleDateFormat(DATE_FORMAT_1);
 //            Log.d(LOG_TAG, "onCreateView[" + index + "] : currentTimeInMilliSecond - " + System.currentTimeMillis() +
 //                    " and extraValue - " + ((index - 2) * 86400000) +
 //                    " Date - " + dateFormatFull.format(date));
 
             mViewFragments[index] = new MainPageFragment();
-            //mViewFragments[index].setFragmentDateStr(dateFormatFull.format(date));
-            mViewFragments[index].setFragmentDate(date);
+            mViewFragments[index].setFragmentDateStr(dateFormatFull.format(date));
         }
 
         setPagerHandler(rootView);
         return rootView;
+    }
+
+    private long getDayInMillis(){
+        return (60 * /* Total Seconds in 1 Minute */
+                60 * /* Total Minutes in 1 Hour */
+                24 * /* Total Hours in 1 Day */
+                1000 /* One Second in millisecond */ );
+    }
+
+    private long getRequiredTimeInMillis(int position){
+        return (System.currentTimeMillis() +
+                ((position - 2) * getDayInMillis()));
     }
 
     public void setPagerHandler(View view){
@@ -82,10 +90,10 @@ public class ViewPagerFragment extends Fragment {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            Log.d(LOG_TAG, "getPageTitle[" + position + "]" +
-                    " : currentTimeInMilliSecond - " + (System.currentTimeMillis() + ((position - 2) * 86400000)) +
-                    " & getTime() - " +  mViewFragments[position].getFragmentDate().getTime());
-            return getDayName(getActivity(), mViewFragments[position].getFragmentDate().getTime());
+            long timeInMilliSecond = getRequiredTimeInMillis(position);
+//            Log.d(LOG_TAG, "getPageTitle[" + position + "]" +
+//                    " : currentTimeInMilliSecond - " + timeInMilliSecond);
+            return getDayName(getActivity(), timeInMilliSecond);
         }
 
         public String getDayName(Context context, long dateInMillis) {
@@ -102,17 +110,17 @@ public class ViewPagerFragment extends Fragment {
             int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), time.gmtoff);
 
             if (julianDay == currentJulianDay) {
-                Log.d(LOG_TAG, context.getString(R.string.today));
+                //Log.d(LOG_TAG, context.getString(R.string.today));
                 return context.getString(R.string.today);
             } else if (julianDay == currentJulianDay + 1) {
-                Log.d(LOG_TAG, context.getString(R.string.tomorrow));
+                //Log.d(LOG_TAG, context.getString(R.string.tomorrow));
                 return context.getString(R.string.tomorrow);
             } else if (julianDay == currentJulianDay - 1) {
-                Log.d(LOG_TAG, context.getString(R.string.yesterday));
+                //Log.d(LOG_TAG, context.getString(R.string.yesterday));
                 return context.getString(R.string.yesterday);
             } else {
                 SimpleDateFormat dateFormatDay = new SimpleDateFormat(DATE_FORMAT_2);
-                Log.d(LOG_TAG, dateFormatDay.format(dateInMillis));
+                //Log.d(LOG_TAG, dateFormatDay.format(dateInMillis));
                 return dateFormatDay.format(dateInMillis);
             }
         }

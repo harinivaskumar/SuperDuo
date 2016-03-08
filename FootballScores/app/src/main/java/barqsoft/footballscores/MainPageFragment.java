@@ -14,9 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import barqsoft.footballscores.data.DatabaseContract;
 import barqsoft.footballscores.service.MatchFetchService;
 
@@ -29,11 +26,9 @@ public class MainPageFragment extends Fragment
     private final String LOG_TAG = MainPageFragment.class.getSimpleName();
 
     public static final int SCORES_LOADER = 0;
-    private final String DATE_FORMAT_1 = "yyyy-MM-dd";
 
     private ScoresAdapter mAdapter;
-    private Date mFragmentDate;
-    private String[] mDateStr;
+    private String[] mFragmentDateStr;
 
     public MainPageFragment() {
     }
@@ -44,28 +39,13 @@ public class MainPageFragment extends Fragment
     }
 
     public void setFragmentDateStr(String dateStr) {
-        mDateStr = new String[1];
-        mDateStr[0] = dateStr;
-        Log.d(LOG_TAG, "setFragmentDateStr(String) : DateStr - " + mDateStr[0]);
-    }
-
-    private void setFragmentDateStr(){
-        mDateStr = new String[1];
-        SimpleDateFormat dateFormatFull = new SimpleDateFormat(DATE_FORMAT_1);
-        mDateStr[0] = dateFormatFull.format(getFragmentDate());
-        Log.d(LOG_TAG, "setFragmentDateStr() : DateStr - " + mDateStr[0]);
+        mFragmentDateStr = new String[1];
+        mFragmentDateStr[0] = dateStr;
+        Log.d(LOG_TAG, "setFragmentDateStr(String) : DateStr - " + mFragmentDateStr[0]);
     }
 
     private String[] getFragmentDateStr(){
-        return mDateStr;
-    }
-
-    public void setFragmentDate(Date date) {
-        mFragmentDate = date;
-    }
-
-    public Date getFragmentDate(){
-        return mFragmentDate;
+        return mFragmentDateStr;
     }
 
     @Override
@@ -99,7 +79,6 @@ public class MainPageFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        setFragmentDateStr();
         return new CursorLoader(getActivity(),
                 DatabaseContract.scores_table.buildScoreWithDate(),
                 null, null, getFragmentDateStr(), null);
