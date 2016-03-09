@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.stetho.Stetho;
+
 public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -23,11 +25,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             mViewPagerFragment = new ViewPagerFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, mViewPagerFragment)
                     .commit();
+        }
+        if (savedInstanceState == null) {
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
         }
     }
 
@@ -76,19 +87,19 @@ public class MainActivity extends ActionBarActivity {
                 " and Selected Match Id: " + getSelectedMatchId());
     }
 
-    public static void setCurrentFragmentId(int fragmentId){
+    public static void setCurrentFragmentId(int fragmentId) {
         currentFragmentId = fragmentId;
     }
 
-    public static int getCurrentFragmentId(){
+    public static int getCurrentFragmentId() {
         return currentFragmentId;
     }
 
-    public static void setSelectedMatchId(Double matchId){
+    public static void setSelectedMatchId(Double matchId) {
         selectedMatchId = matchId;
     }
 
-    public static Double getSelectedMatchId(){
+    public static Double getSelectedMatchId() {
         return selectedMatchId;
     }
 }
