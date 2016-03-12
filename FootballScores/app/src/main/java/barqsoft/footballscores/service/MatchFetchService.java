@@ -16,17 +16,6 @@ import barqsoft.footballscores.tasks.FootBallSyncTask;
 public class MatchFetchService extends IntentService {
     public static final String LOG_TAG = MatchFetchService.class.getSimpleName();
 
-    private final int TOTAL_LEAGUES_COUNT = 12;
-
-    private final String[] LEAGUES = { //Totally 12 LeagueIds for Season 2015 to 2106
-            "394", "395", "396", "397", "398", "399",
-            "400", "401", "402", "403", "404", "405"
-    };
-    private final String[] TIME_FRAMES = {
-            "n2", //For next Two days from Today
-            "p3"  //For previous Two days from Today and Today itself
-    };
-
     public MatchFetchService() {
         super("MatchFetchService");
     }
@@ -55,17 +44,17 @@ public class MatchFetchService extends IntentService {
             Log.v(LOG_TAG, "fetchAllTeamDetails : Total No of League's present - " + leaguesCount);
         }
 
-        if (leaguesCount < TOTAL_LEAGUES_COUNT) {
+        if (leaguesCount < Utilities.TOTAL_LEAGUES_COUNT) {
             for (int leagueIdIndex = leaguesCount;
-                 leagueIdIndex < TOTAL_LEAGUES_COUNT;
+                 leagueIdIndex < Utilities.TOTAL_LEAGUES_COUNT;
                  leagueIdIndex++) {
-                fetchTeamDetails(LEAGUES[leagueIdIndex]);
+                fetchTeamDetails(Utilities.LEAGUES[leagueIdIndex]);
             }
         }
     }
 
     private void fetchAllMatchScoresData(){
-        for (String timeFrame : TIME_FRAMES) {
+        for (String timeFrame : Utilities.TIME_FRAMES) {
             fetchMatchScoresData(timeFrame);
         }
     }

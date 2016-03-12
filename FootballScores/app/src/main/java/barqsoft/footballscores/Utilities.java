@@ -1,21 +1,48 @@
 package barqsoft.footballscores;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.TextView;
 
+import barqsoft.footballscores.data.DatabaseContract;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
 public class Utilities {
-    private static final int BUNDESLIGA = 351;
-    private static final int PREMIER_LEGAUE = 354;
-    private static final int SERIE_A = 357;
-    private static final int PRIMERA_DIVISION = 358;
-    private static final int CHAMPIONS_LEAGUE = 362;
+
+    public static final String[] TIME_FRAMES = {
+            "n2", //For next Two days from Today
+            "p3"  //For previous Two days from Today and Today itself
+    };
+
+    public static final int TOTAL_LEAGUES_COUNT = 12;
+
+    public static final String[] LEAGUES = { //Totally 12 LeagueIds for Season 2015 to 2106
+            "394", "395", "396", "397", "398", "399",
+            "400", "401", "402", "403", "404", "405"
+    };
+
+    public static final int START_LEAGUE_ID = 394;
+    public static final int END_LEAGUE_ID = 405;
+
+    private static final String BUNDESLIGA_1 = " 1. Bundesliga 2015/16 "; // 394
+    private static final String BUNDESLIGA_2 = " 2. Bundesliga 2015/16 "; // 395
+    private static final String LIGUE_1 = " Ligue 1 2015/16 "; // 396
+    private static final String LIGUE_2 = " Ligue 2 2015/16 "; // 397
+    private static final String PREMIER_LEAGUE = " Premier League 2015/16 "; // 398
+    private static final String PREMERA_DIVISION = " Primera Division 2015/16 "; // 399
+    private static final String SEGUNDA_DIVISION = " Segunda Division 2015/16 "; // 400
+    private static final String SERIA_A = " Serie A 2015/16 "; // 401
+    private static final String PRIMEIRA_LIGA = " Primeira Liga 2015/16 "; // 402
+    private static final String BUNDESLIGA_3 = " 3. Bundesliga 2015/16 "; // 403
+    private static final String EREDIVISIE = " Eredivisie 2015/16 "; // 404
+    private static final String CHAMPIONS_LEAGUE = " Champions League 2015/16 "; // 405
+    private static final String UNKOWN_LEAGUE = "Unknown League. Please report!";
 
     private static final String ARSENAL_LONDON_FC = "Arsenal London FC";
     private static final String EVERTON_FC = "Everton FC";
@@ -28,27 +55,30 @@ public class Utilities {
     private static final String WEST_BROMWICH_ALBION = "West Bromwich Albion";
     private static final String WEST_HAM_UNITED_FC = "West Ham United FC";
 
-    public static String getLeague(int league_num) {
+    private static final int CHAMPIONS_LEAGUE_NUM = 362;
+
+    public static String getLeague(int leagueId) {
         //TODO change all these as String resources
-        switch (league_num) {
-            case BUNDESLIGA:
-                return "Bundesliga";
-            case PREMIER_LEGAUE:
-                return "Premier League";
-            case SERIE_A:
-                return "Seria A";
-            case PRIMERA_DIVISION:
-                return "Primera Division";
-            case CHAMPIONS_LEAGUE:
-                return "UEFA Champions League";
-            default:
-                return "Unknown League. Please report!";
+        switch (leagueId) {
+            case 394:   return BUNDESLIGA_1;
+            case 395:   return BUNDESLIGA_2;
+            case 396:   return LIGUE_1;
+            case 397:   return LIGUE_2;
+            case 398:   return PREMIER_LEAGUE;
+            case 399:   return PREMERA_DIVISION;
+            case 400:   return SEGUNDA_DIVISION;
+            case 401:   return SERIA_A;
+            case 402:   return PRIMEIRA_LIGA;
+            case 403:   return BUNDESLIGA_3;
+            case 404:   return EREDIVISIE;
+            case 405:   return CHAMPIONS_LEAGUE;
+            default:    return UNKOWN_LEAGUE;
         }
     }
 
     public static String getMatchDay(int matchDay, int leagueNum) {
         //TODO change all these as String resources
-        if (leagueNum == CHAMPIONS_LEAGUE) {
+        if (leagueNum == CHAMPIONS_LEAGUE_NUM) {
             if (matchDay <= 6) {
                 return "Group Stages, Match Day : 6";
             } else if (matchDay == 7 || matchDay == 8) {
@@ -65,33 +95,9 @@ public class Utilities {
         }
     }
 
-    public static String getScores(int homeGoals, int awayGoals) {
-        if (homeGoals < 0 || awayGoals < 0) {
-            //TODO change this to a String Resource
-            return "Match yet to Start!";
-        }
-        return String.valueOf(homeGoals) + " - " + String.valueOf(awayGoals);
-    }
-
-    public static float getScoreTextSize(TextView score,
-                                         int homeGoals, int awayGoals){
-        if (homeGoals < 0 || awayGoals < 0) {
-            //TODO change this to a float Resource
-            return 20.0f;
-        }
-        return 22.0f;
-    }
-
-    public static int getScoreTextColor(int homeGoals, int awayGoals) {
-        if (homeGoals < 0 || awayGoals < 0) {
-            return Color.RED;
-        }
-        return Color.BLACK;
-    }
-
     public static int getTeamLogoByTeamName(String teamName) {
         if (teamName == null) {
-            return R.drawable.no_icon;
+            return R.drawable.ic_launcher;
         }
         /*
          * This is the set of icons that are currently in the app.
@@ -119,8 +125,32 @@ public class Utilities {
             case WEST_HAM_UNITED_FC:
                 return R.drawable.west_ham;
             default:
-                return R.drawable.no_icon;
+                return R.drawable.ic_launcher;
         }
+    }
+
+    public static String getScores(int homeGoals, int awayGoals) {
+        if (homeGoals < 0 || awayGoals < 0) {
+            //TODO change this to a String Resource
+            return "Match yet to Start!";
+        }
+        return String.valueOf(homeGoals) + " - " + String.valueOf(awayGoals);
+    }
+
+    public static float getScoreTextSize(TextView score,
+                                         int homeGoals, int awayGoals){
+        if (homeGoals < 0 || awayGoals < 0) {
+            //TODO change this to a float Resource
+            return 20.0f;
+        }
+        return 22.0f;
+    }
+
+    public static int getScoreTextColor(int homeGoals, int awayGoals) {
+        if (homeGoals < 0 || awayGoals < 0) {
+            return Color.RED;
+        }
+        return Color.BLACK;
     }
 
     // Added from StackOverFlow
@@ -133,5 +163,27 @@ public class Utilities {
         }
         Log.e("Utilities", "No Internet Connection available.");
         return false;
+    }
+
+    public static String getTeamCrestURLStr(Context context,
+                                            String teamId, String leagueId){
+        String teamCrestUrl;
+
+        Cursor cursor = context
+                .getContentResolver()
+                .query(DatabaseContract.TeamsTable.buildTeamCrestWithTeamId(teamId, leagueId),
+                        null,
+                        null,
+                        null,
+                        null);
+        if (cursor != null && cursor.getCount() >= 1){
+            cursor.moveToFirst();
+            teamCrestUrl = cursor.getString(0);
+            cursor.close();
+            return teamCrestUrl;
+        }else {
+            //Log.e("Utilities", "getTeamCrestURLStr : Cursor Returned Empty!");
+            return null;
+        }
     }
 }

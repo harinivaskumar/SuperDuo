@@ -66,7 +66,7 @@ public class DatabaseContract {
         public static final String TOTAL_LEAGUES_COUNT = "TotalLeaguesCount";
         public static final String LEAGUE_COUNT = "LeagueCount";
 
-        private static final String PATH_TEAM_ID = "team-id";
+        private static final String PATH_CREST_URL = "crest-url";
         private static final String PATH_LEAGUE_COUNT = "league-count";
 
         public static final Uri TEAMS_BASE_CONTENT_URI = BASE_CONTENT_URI.buildUpon().
@@ -77,14 +77,21 @@ public class DatabaseContract {
         public static final String CONTENT_TYPE_ITEM =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TEAMS;
 
-        public static Uri buildTeamCrestWithTeamId() { //Item
+        public static Uri buildTeamCrestWithTeamId(String teamId,
+                                                   String leagueId) { //Item
             return TEAMS_BASE_CONTENT_URI.buildUpon()
-                    .appendPath(PATH_TEAM_ID)
+                    .appendPath(PATH_CREST_URL)
+                    .appendPath(leagueId)
+                    .appendPath(teamId)
                     .build();
         }
 
-        public static String getTeamIdFromUri(Uri uri){
-            return uri.getPathSegments().get(1);
+        public static String getLeagueIdFromCrestUri(Uri uri){
+            return uri.getPathSegments().get(2);
+        }
+
+        public static String getTeamIdFromCrestUri(Uri uri){
+            return uri.getPathSegments().get(3);
         }
 
         public static Uri buildLeaguesCount(){

@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by yehya khaled on 2/26/2015.
@@ -28,9 +31,6 @@ public class ScoresAdapter extends CursorAdapter {
     private static final int COL_AWAY_NAME = 9;
     private static final int COL_HOME_GOALS = 10;
     private static final int COL_AWAY_GOALS = 11;
-    //TODO change the position of Home Crest and Away Crest Column indexes
-    private static final int COL_HOME_CREST = 12;
-    private static final int COL_AWAY_CREST = 13;
 
     private double mDetailedMatchId = 0;
 
@@ -53,7 +53,7 @@ public class ScoresAdapter extends CursorAdapter {
     @Override
     public void bindView(View oldView, Context context, Cursor cursor) {
         mViewHolder = (ViewHolder) oldView.getTag();
-        populateViewHolderWithInformation(cursor);
+        populateViewHolderWithInformation(context, cursor);
 
         //Log.v(LOG_TAG, "DetailedMatchId - " + String.valueOf(mDetailedMatchId));
 
@@ -74,14 +74,18 @@ public class ScoresAdapter extends CursorAdapter {
         this.mDetailedMatchId = mDetailedMatchId;
     }
 
-    private void populateViewHolderWithInformation(Cursor cursor) {
-        //TODO change Home Crest name to URL and use Picaso to load images from internet
-        mViewHolder.homeCrest.setImageResource(
+    private void populateViewHolderWithInformation(Context context, Cursor cursor) {
+        loadTeamCrestImageIntoImageView(context,
+                mViewHolder.homeCrest,
+                cursor.getString(COL_HOME_ID),
+                cursor.getString(COL_LEAGUE_ID),
                 Utilities.getTeamLogoByTeamName(cursor.getString(COL_HOME_NAME)));
         mViewHolder.homeName.setText(cursor.getString(COL_HOME_NAME));
 
-        //TODO change Away Crest name to URL and use Picaso to load images from internet
-        mViewHolder.awayCrest.setImageResource(
+        loadTeamCrestImageIntoImageView(context,
+                mViewHolder.awayCrest,
+                cursor.getString(COL_AWAY_ID),
+                cursor.getString(COL_LEAGUE_ID),
                 Utilities.getTeamLogoByTeamName(cursor.getString(COL_AWAY_NAME)));
         mViewHolder.awayName.setText(cursor.getString(COL_AWAY_NAME));
 
@@ -102,6 +106,32 @@ public class ScoresAdapter extends CursorAdapter {
                 " Vs. Away Name - " + mViewHolder.awayName.getText() +
                 " & Match Id " + String.valueOf(mViewHolder.getMatchId()));
 */
+    }
+
+    private void loadTeamCrestImageIntoImageView(Context context, ImageView imageView,
+                                                 String teamId, String leagueId,
+                                                 int defaultImage /*On Error or Offline*/){
+        String teamCrestUrl = null;
+        if (Utilities.isNetworkAvailable(context)) {
+            teamCrestUrl = Utilities.getTeamCrestURLStr(context, teamId, leagueId);
+            if (teamCrestUrl != null) {
+                if (teamCrestUrl.endsWith(".svg")){
+                    teamCrestUrl = null;
+                }else {
+                    Picasso.with(context)
+                            .load(teamCrestUrl)
+                            .into(imageView);
+                    //Log.d(LOG_TAG, "populateViewHolderWithInformation : Crest URL - " + teamCrestUrl);
+                }
+            }
+        }
+
+        if (teamCrestUrl == null){
+            Picasso.with(context)
+                    .load(defaultImage)
+                    .into(imageView);
+            //Log.d(LOG_TAG, "populateViewHolderWithInformation : Crest URL is Empty, Loading default image!");
+        }
     }
 
     private void addNewViewToViewGroup(ViewGroup containerVG, final Context context, Cursor cursor){
