@@ -34,6 +34,8 @@ public class MainPageFragment extends Fragment
     private String[] mFragmentDateStr;
 
     public MainPageFragment() {
+        mFragmentDateStr = new String[1];
+        mFragmentDateStr[0] = "";
     }
 
     private void updateScores() {
@@ -53,7 +55,6 @@ public class MainPageFragment extends Fragment
     }
 
     public void setFragmentDateStr(String dateStr) {
-        mFragmentDateStr = new String[1];
         mFragmentDateStr[0] = dateStr;
         //Log.d(LOG_TAG, "setFragmentDateStr(String) : DateStr - " + mFragmentDateStr[0]);
     }
