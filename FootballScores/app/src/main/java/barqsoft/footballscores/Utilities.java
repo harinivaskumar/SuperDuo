@@ -183,6 +183,8 @@ public class Utilities {
             return teamCrestUrl;
         }else {
             //Log.e("Utilities", "getTeamCrestURLStr : Cursor Returned Empty!");
+            if (cursor != null)
+                cursor.close();
             return null;
         }
     }
