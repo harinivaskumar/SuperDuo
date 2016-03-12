@@ -1,4 +1,4 @@
-package barqsoft.footballscores.data;
+package barqsoft.footballscores.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,13 +16,15 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.data.DatabaseContract;
+import barqsoft.footballscores.data.MatchData;
 
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
  */
-public class MatchDataParser extends AsyncTask<Void, Void, Void>{
+public class MatchDataParserTask extends AsyncTask<Void, Void, Void>{
 
-    private final String LOG_TAG = MatchDataParser.class.getSimpleName();
+    private final String LOG_TAG = MatchDataParserTask.class.getSimpleName();
 
     private final String FIXTURES = "fixtures";
     private final String LINKS = "_links";
@@ -50,7 +52,7 @@ public class MatchDataParser extends AsyncTask<Void, Void, Void>{
     private int matchCount;
     private boolean isRealData;
 
-    public MatchDataParser(Context context, String jsonData){
+    public MatchDataParserTask(Context context, String jsonData){
         this.mContext = context;
         createJSONArrayWithRealMatches(jsonData);
         setMatchCount();

@@ -1,4 +1,4 @@
-package barqsoft.footballscores.service;
+package barqsoft.footballscores.tasks;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,8 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import barqsoft.footballscores.BuildConfig;
-import barqsoft.footballscores.data.MatchDataParser;
-import barqsoft.footballscores.data.TeamDataParser;
 
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
@@ -104,9 +102,9 @@ public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
 
     private void parseJsonData(){
         if (isRequestTeamFetchRequestType()){
-            new TeamDataParser(mContext, getJsonDataStr(), getLeagueId()).execute();
+            new TeamDataParserTask(mContext, getJsonDataStr(), getLeagueId()).execute();
         }else{
-            new MatchDataParser(mContext, getJsonDataStr()).execute();
+            new MatchDataParserTask(mContext, getJsonDataStr()).execute();
         }
     }
 

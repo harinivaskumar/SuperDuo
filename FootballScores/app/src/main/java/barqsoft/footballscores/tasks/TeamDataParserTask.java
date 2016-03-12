@@ -1,4 +1,4 @@
-package barqsoft.footballscores.data;
+package barqsoft.footballscores.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,11 +11,14 @@ import org.json.JSONObject;
 
 import java.util.Vector;
 
+import barqsoft.footballscores.data.DatabaseContract;
+import barqsoft.footballscores.data.TeamData;
+
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
  */
-public class TeamDataParser extends AsyncTask<Void, Void, Void> {
-    private final String LOG_TAG = TeamDataParser.class.getSimpleName();
+public class TeamDataParserTask extends AsyncTask<Void, Void, Void> {
+    private final String LOG_TAG = TeamDataParserTask.class.getSimpleName();
 
     private final String TEAMS = "teams";
 
@@ -34,7 +37,7 @@ public class TeamDataParser extends AsyncTask<Void, Void, Void> {
     private int teamCount;
     private String leagueId;
 
-    public TeamDataParser(Context context, String jsonData, String leagueId){
+    public TeamDataParserTask(Context context, String jsonData, String leagueId){
         this.mContext = context;
         createJSONArrayWithTeams(jsonData);
         setTeamCount();

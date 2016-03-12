@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import barqsoft.footballscores.tasks.FootBallSyncTask;
+
 /**
  * Created by yehya khaled on 3/2/2015.
  */

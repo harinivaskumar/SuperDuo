@@ -12,7 +12,7 @@ public class TeamData {
     private String teamName, shortName;
     private String crestUrl;
 
-    TeamData(){
+    public TeamData(){
         setTeamAsContentValues();
     }
 

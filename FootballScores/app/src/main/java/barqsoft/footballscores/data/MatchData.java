@@ -14,7 +14,7 @@ public class MatchData {
     private String homeTeamId, awayTeamId;
     private String homeTeamGoals, awayTeamGoals;
 
-    MatchData(){
+    public MatchData(){
         setMatchAsContentValues();
     }
 
