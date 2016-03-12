@@ -22,7 +22,7 @@ public class MatchFetchService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        fetchAllTeamDetails();
+        //fetchAllTeamDetails(); /* If required enable later */
         fetchAllMatchScoresData();
     }
 
