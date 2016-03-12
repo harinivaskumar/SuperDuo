@@ -1,6 +1,10 @@
 package barqsoft.footballscores;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -117,5 +121,17 @@ public class Utilities {
             default:
                 return R.drawable.no_icon;
         }
+    }
+
+    // Added from StackOverFlow
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            return true;
+        }
+        Log.e("Utilities", "No Internet Connection available.");
+        return false;
     }
 }

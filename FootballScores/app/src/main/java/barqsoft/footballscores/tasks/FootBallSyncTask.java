@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import barqsoft.footballscores.BuildConfig;
+import barqsoft.footballscores.Utilities;
 
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
@@ -88,14 +89,14 @@ public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
         if (isRequestTeamFetchRequestType()) {
             fetchUri = Uri.parse(TEAMS_BASE_URL + getLeagueId() + TEAMS_QUERY_PARAM);
             fetchUrl = new URL(fetchUri.toString());
-            Log.d(LOG_TAG, "getFetchURL : [" + getLeagueId() + "] URL is - " + fetchUrl);
+            //Log.d(LOG_TAG, "getFetchURL : [" + getLeagueId() + "] URL is - " + fetchUrl);
         }else {
             fetchUri = Uri.parse(SCORES_BASE_URL)
                     .buildUpon()
                     .appendQueryParameter(TIME_FRAME_QUERY_PARAM, getTimeFrame())
                     .build();
             fetchUrl = new URL(fetchUri.toString());
-            Log.d(LOG_TAG, "getFetchURL : [" + getTimeFrame() + "] URL is - " + fetchUrl);
+            //Log.d(LOG_TAG, "getFetchURL : [" + getTimeFrame() + "] URL is - " + fetchUrl);
         }
         return fetchUrl;
     }
@@ -114,6 +115,11 @@ public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
         BufferedReader bufferedReader = null;
 
         try {
+            if (!Utilities.isNetworkAvailable(mContext)){
+                Log.e(LOG_TAG, "You are Offline!");
+                return null;
+            }
+
             //Opening Connection
             httpURLConnection = (HttpURLConnection) getFetchURL().openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -121,6 +127,10 @@ public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
             httpURLConnection.connect();
 
             // Read the input stream into a String
+            if (!Utilities.isNetworkAvailable(mContext)){
+                Log.e(LOG_TAG, "You are Offline!");
+                return null;
+            }
             InputStream inputStream = httpURLConnection.getInputStream();
             StringBuffer stringBuffer = new StringBuffer();
             if (inputStream == null) {
@@ -156,6 +166,7 @@ public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
                     bufferedReader.close();
                 } catch (IOException ioe) {
                     Log.e(LOG_TAG, "doInBackground : IOException - " + ioe.getMessage());
+                    ioe.printStackTrace();
                 }
             }
         }

@@ -8,11 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import barqsoft.footballscores.data.DatabaseContract;
 import barqsoft.footballscores.service.MatchFetchService;
@@ -27,6 +29,7 @@ public class MainPageFragment extends Fragment
 
     public static final int SCORES_LOADER = 0;
 
+    private static Toast notifyAsToast;
     private ScoresAdapter mAdapter;
     private String[] mFragmentDateStr;
 
@@ -34,6 +37,16 @@ public class MainPageFragment extends Fragment
     }
 
     private void updateScores() {
+        if (!Utilities.isNetworkAvailable(getActivity().getApplicationContext())) {
+            Log.e(LOG_TAG, "updateScores : You are Offline!");
+            if (notifyAsToast == null) {
+                notifyAsToast = Toast.makeText(getActivity().getApplicationContext(),
+                        "You are Offline!", Toast.LENGTH_LONG);
+                notifyAsToast.show();
+            }
+            return;
+        }
+
         Intent matchFetchServiceIntent = new Intent(getActivity(), MatchFetchService.class);
         getActivity().startService(matchFetchServiceIntent);
         //Log.d(LOG_TAG, "updateScores : Started MatchFetch intent Service!");
@@ -45,8 +58,8 @@ public class MainPageFragment extends Fragment
         //Log.d(LOG_TAG, "setFragmentDateStr(String) : DateStr - " + mFragmentDateStr[0]);
     }
 
-    private String[] getFragmentDateStr(){
-        return mFragmentDateStr;
+    private String getFragmentDateStr(int position){
+        return mFragmentDateStr[0];
     }
 
     @Override
@@ -82,30 +95,7 @@ public class MainPageFragment extends Fragment
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         //Log.v(LOG_TAG, "onCreateLoader : Loader Started!");
         Uri scoresForDateUri = DatabaseContract.ScoresTable
-                .buildScoreWithDate(mFragmentDateStr[0]);
-        //TODO Fill the projection array to retrieve only what is required.
-        String[] projection = {
-                DatabaseContract.ScoresTable.MATCH_TIME,
-                DatabaseContract.ScoresTable.LEAGUE_ID,
-                DatabaseContract.ScoresTable.MATCH_ID,
-                DatabaseContract.ScoresTable.MATCH_DAY,
-                DatabaseContract.ScoresTable.HOME_TEAM_NAME,
-                DatabaseContract.ScoresTable.AWAY_TEAM_NAME,
-                DatabaseContract.ScoresTable.HOME_TEAM_GOALS,
-                DatabaseContract.ScoresTable.AWAY_TEAM_GOALS,
-                DatabaseContract.TeamsTable.CREST_URL,
-                DatabaseContract.TeamsTable.CREST_URL
-        };
-        //Not required now this is taken care in ContentProvider side
-        //String[] selectionArgs = {mFragmentDateStr[0]};
-/*        Log.d(LOG_TAG, "onCreateLoader : Encodedpath - " + scoresForDateUri.getEncodedPath() +
-                " Encoded Query - " + scoresForDateUri.getEncodedQuery() +
-                " Encoded UserInfo - " + scoresForDateUri.getEncodedUserInfo() +
-                " Authority - " + scoresForDateUri.getAuthority() +
-                " Host - " + scoresForDateUri.getHost() +
-                " Last Patch Segment - " + scoresForDateUri.getLastPathSegment() +
-                " Path - " + scoresForDateUri.getPath() +
-                " Query - " + scoresForDateUri.getQuery());*/
+                .buildScoreWithDate(getFragmentDateStr(0));
         return new CursorLoader(getActivity(),
                 scoresForDateUri,
                 null,
@@ -116,8 +106,8 @@ public class MainPageFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        //Log.v(LOG_TAG, "onLoadFinished : Loader Finished!");
-/*        int position = 0;
+/*      Log.v(LOG_TAG, "onLoadFinished : Loader Finished!");
+        int position = 0;
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             position++;
