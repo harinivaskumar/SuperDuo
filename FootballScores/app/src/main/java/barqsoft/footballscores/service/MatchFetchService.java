@@ -14,6 +14,7 @@ import java.net.URL;
 
 import barqsoft.footballscores.BuildConfig;
 import barqsoft.footballscores.data.MatchDataParser;
+import barqsoft.footballscores.data.TeamDataParser;
 
 /**
  * Created by yehya khaled on 3/2/2015.
@@ -29,8 +30,76 @@ public class MatchFetchService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        fetchDataForTimeFrame("n2");
-        fetchDataForTimeFrame("p3");
+        fetchAllTeamDetails();
+        //fetchDataForTimeFrame("n2");
+        //fetchDataForTimeFrame("p3");
+    }
+
+    private void fetchAllTeamDetails(){
+        for (String leagueId : LEAGUES){
+            fetchTeamDetails(leagueId);
+        }
+    }
+
+    private void fetchTeamDetails(String leagueId){
+        final String BASE_URL = "http://api.football-data.org/alpha/soccerseasons/"; //Base URL
+        final String TEAMS = "/teams";
+
+        HttpURLConnection httpURLConnection = null;
+        BufferedReader bufferedReader = null;
+        String jsonDataStr = null;
+        try {
+            Uri fetchUri = Uri.parse(BASE_URL + leagueId + TEAMS);
+            URL fetchUrl = new URL(fetchUri.toString());
+            Log.d(LOG_TAG, "fetchTeamDetails : [" + leagueId + "] URL is - " + fetchUrl);
+
+            //Opening Connection
+            httpURLConnection = (HttpURLConnection) fetchUrl.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.addRequestProperty("X-Auth-Token", BuildConfig.FOOTBALL_API_KEY);
+            httpURLConnection.connect();
+
+            // Read the input stream into a String
+            InputStream inputStream = httpURLConnection.getInputStream();
+            StringBuffer stringBuffer = new StringBuffer();
+            if (inputStream == null) {
+                Log.e(LOG_TAG, "fetchTeamDetails : InputStream is NULL");
+                return;
+            }
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String lineString;
+            while ((lineString = bufferedReader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // stringBuffer for debugging.
+                stringBuffer.append(lineString + "\n");
+            }
+
+            if (stringBuffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                Log.e(LOG_TAG, "fetchTeamDetails : String Buffer Length is Zero");
+                return;
+            }
+            jsonDataStr = stringBuffer.toString();
+            //Log.d(LOG_TAG, "fetchDataForTimeFrame : JSON String " + jsonDataStr);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "fetchDataForTimeFrame : Exception - " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (httpURLConnection != null) {
+                httpURLConnection.disconnect();
+            }
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ioe) {
+                    Log.e(LOG_TAG, "fetchTeamDetails : IOException - " + ioe.getMessage());
+                }
+            }
+        }
+
+        new TeamDataParser(getApplicationContext(), jsonDataStr, leagueId).parse();
     }
 
     private void fetchDataForTimeFrame(String timeFrame) {

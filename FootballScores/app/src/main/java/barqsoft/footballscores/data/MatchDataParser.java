@@ -23,25 +23,25 @@ public class MatchDataParser {
 
     private final String LOG_TAG = MatchDataParser.class.getSimpleName();
 
-    public final String FIXTURES = "fixtures";
-    public final String LINKS = "_links";
-    public final String SOCCER_SEASON = "soccerseason";
-    public final String SELF = "self";
-    public final String HREF = "href";
+    private final String FIXTURES = "fixtures";
+    private final String LINKS = "_links";
+    private final String SOCCER_SEASON = "soccerseason";
+    private final String SELF = "self";
+    private final String HREF = "href";
 
-    public final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/"; //to fetch leagueId
-    public final String MATCH_LINK = "http://api.football-data.org/alpha/fixtures/"; //to fetch matchId
-    public final String TEAMS_LINK = "http://api.football-data.org/alpha/teams/"; //to fetch teamId
+    private final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/"; //to fetch leagueId
+    private final String MATCH_LINK = "http://api.football-data.org/alpha/fixtures/"; //to fetch matchId
+    private final String TEAMS_LINK = "http://api.football-data.org/alpha/teams/"; //to fetch teamId
 
-    public final String MATCH_DATE = "date";
-    public final String MATCH_DAY = "matchday";
-    public final String HOME_TEAM_NAME = "homeTeamName";
-    public final String AWAY_TEAM_NAME = "awayTeamName";
-    public final String HOME_TEAM_ID = "homeTeam";
-    public final String AWAY_TEAM_ID = "awayTeam";
-    public final String HOME_GOALS = "goalsHomeTeam";
-    public final String AWAY_GOALS = "goalsAwayTeam";
-    public final String RESULT = "result";
+    private final String MATCH_DATE = "date";
+    private final String MATCH_DAY = "matchday";
+    private final String HOME_TEAM_NAME = "homeTeamName";
+    private final String AWAY_TEAM_NAME = "awayTeamName";
+    private final String HOME_TEAM_ID = "homeTeam";
+    private final String AWAY_TEAM_ID = "awayTeam";
+    private final String HOME_GOALS = "goalsHomeTeam";
+    private final String AWAY_GOALS = "goalsAwayTeam";
+    private final String RESULT = "result";
 
     private Context mContext;
     private JSONArray matchesJSONArray;
