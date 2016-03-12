@@ -2,6 +2,7 @@ package barqsoft.footballscores;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -39,6 +40,18 @@ public class MainActivity extends ActionBarActivity {
                             .enableWebKitInspector(
                                     Stetho.defaultInspectorModulesProvider(this))
                             .build());
+                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                        .detectDiskReads()
+                        .detectDiskWrites()
+                        .detectNetwork()   // or .detectAll() for all detectable problems
+                        .penaltyLog()
+                        .build());
+                StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                        .detectLeakedSqlLiteObjects()
+                        .detectLeakedClosableObjects()
+                        .penaltyLog()
+                        .penaltyDeath()
+                        .build());
         }
     }
 
