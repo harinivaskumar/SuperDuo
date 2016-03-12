@@ -2,6 +2,7 @@ package barqsoft.footballscores.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -19,7 +20,7 @@ import barqsoft.footballscores.R;
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
  */
-public class MatchDataParser {
+public class MatchDataParser extends AsyncTask<Void, Void, Void>{
 
     private final String LOG_TAG = MatchDataParser.class.getSimpleName();
 
@@ -82,7 +83,7 @@ public class MatchDataParser {
         }
     }
 
-    public void parse() {
+    private void parse() {
         try {
             Vector<ContentValues> matchesDataVector = new Vector<ContentValues>(getMatchCount());
 
@@ -203,14 +204,14 @@ public class MatchDataParser {
 
     private void insertMatchDataToDB(Vector<ContentValues> matchesDataVector){
         int insertedCount = 0;
-        Log.d(LOG_TAG, "insertMatchDataToDB : Match data vector Size - " + matchesDataVector.size());
+        //Log.d(LOG_TAG, "insertMatchDataToDB : Match data vector Size - " + matchesDataVector.size());
         if (matchesDataVector.size() > 0) {
             ContentValues[] matchDataCV = new ContentValues[matchesDataVector.size()];
             matchesDataVector.toArray(matchDataCV);
             insertedCount = mContext.getContentResolver()
                     .bulkInsert(DatabaseContract.ScoresTable.SCORES_BASE_CONTENT_URI, matchDataCV);
         }
-        Log.v(LOG_TAG,"insertMatchDataToDB : Successfully Inserted - " + insertedCount);
+        //Log.v(LOG_TAG,"insertMatchDataToDB : Successfully Inserted - " + insertedCount);
     }
 
     private int getMatchCount() {
@@ -234,5 +235,11 @@ public class MatchDataParser {
             */
             modifyJSONArrayWithFakeMatches(mContext.getString(R.string.dummy_data));
         }
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        this.parse();
+        return null;
     }
 }

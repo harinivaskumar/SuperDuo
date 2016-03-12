@@ -2,6 +2,7 @@ package barqsoft.footballscores.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -13,10 +14,9 @@ import java.util.Vector;
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
  */
-public class TeamDataParser {
+public class TeamDataParser extends AsyncTask<Void, Void, Void> {
     private final String LOG_TAG = TeamDataParser.class.getSimpleName();
 
-    private final String TEAM_COUNT = "count";
     private final String TEAMS = "teams";
 
     private final String LINKS = "_links";
@@ -50,7 +50,7 @@ public class TeamDataParser {
         }
     }
 
-    public void parse(){
+    private void parse(){
         try {
             Vector<ContentValues> teamsDataVector = new Vector<ContentValues>(getTeamCount());
 
@@ -98,14 +98,14 @@ public class TeamDataParser {
 
     private void insertTeamDataToDB(Vector<ContentValues> teamsDataVector){
         int insertedCount = 0;
-        Log.d(LOG_TAG, "insertTeamDataToDB : Team data vector Size - " + teamsDataVector.size());
+        //Log.d(LOG_TAG, "insertTeamDataToDB : Team data vector Size - " + teamsDataVector.size());
         if (teamsDataVector.size() > 0) {
             ContentValues[] teamDataCV = new ContentValues[teamsDataVector.size()];
             teamsDataVector.toArray(teamDataCV);
             insertedCount = mContext.getContentResolver()
                     .bulkInsert(DatabaseContract.TeamsTable.TEAMS_BASE_CONTENT_URI, teamDataCV);
         }
-        Log.v(LOG_TAG,"insertTeamDataToDB : Successfully Inserted - " + insertedCount);
+        //Log.v(LOG_TAG,"insertTeamDataToDB : Successfully Inserted - " + insertedCount);
     }
 
     private int getTeamCount() {
@@ -122,5 +122,11 @@ public class TeamDataParser {
 
     private void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        this.parse();
+        return null;
     }
 }
