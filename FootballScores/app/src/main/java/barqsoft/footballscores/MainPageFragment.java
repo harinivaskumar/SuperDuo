@@ -2,12 +2,12 @@ package barqsoft.footballscores;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,12 +36,13 @@ public class MainPageFragment extends Fragment
     private void updateScores() {
         Intent matchFetchServiceIntent = new Intent(getActivity(), MatchFetchService.class);
         getActivity().startService(matchFetchServiceIntent);
+        //Log.d(LOG_TAG, "updateScores : Started MatchFetch intent Service!");
     }
 
     public void setFragmentDateStr(String dateStr) {
         mFragmentDateStr = new String[1];
         mFragmentDateStr[0] = dateStr;
-        Log.d(LOG_TAG, "setFragmentDateStr(String) : DateStr - " + mFragmentDateStr[0]);
+        //Log.d(LOG_TAG, "setFragmentDateStr(String) : DateStr - " + mFragmentDateStr[0]);
     }
 
     private String[] getFragmentDateStr(){
@@ -79,21 +80,50 @@ public class MainPageFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        //Log.v(LOG_TAG, "onCreateLoader : Loader Started!");
+        Uri scoresForDateUri = DatabaseContract.ScoresTable
+                .buildScoreWithDate(mFragmentDateStr[0]);
+        //TODO Fill the projection array to retrieve only what is required.
+        String[] projection = {
+                DatabaseContract.ScoresTable.MATCH_TIME,
+                DatabaseContract.ScoresTable.LEAGUE_ID,
+                DatabaseContract.ScoresTable.MATCH_ID,
+                DatabaseContract.ScoresTable.MATCH_DAY,
+                DatabaseContract.ScoresTable.HOME_TEAM_NAME,
+                DatabaseContract.ScoresTable.AWAY_TEAM_NAME,
+                DatabaseContract.ScoresTable.HOME_TEAM_GOALS,
+                DatabaseContract.ScoresTable.AWAY_TEAM_GOALS,
+                DatabaseContract.TeamsTable.CREST_URL,
+                DatabaseContract.TeamsTable.CREST_URL
+        };
+        //Not required now this is taken care in ContentProvider side
+        //String[] selectionArgs = {mFragmentDateStr[0]};
+/*        Log.d(LOG_TAG, "onCreateLoader : Encodedpath - " + scoresForDateUri.getEncodedPath() +
+                " Encoded Query - " + scoresForDateUri.getEncodedQuery() +
+                " Encoded UserInfo - " + scoresForDateUri.getEncodedUserInfo() +
+                " Authority - " + scoresForDateUri.getAuthority() +
+                " Host - " + scoresForDateUri.getHost() +
+                " Last Patch Segment - " + scoresForDateUri.getLastPathSegment() +
+                " Path - " + scoresForDateUri.getPath() +
+                " Query - " + scoresForDateUri.getQuery());*/
         return new CursorLoader(getActivity(),
-                DatabaseContract.scores_table.buildScoreWithDate(),
-                null, null, getFragmentDateStr(), null);
+                scoresForDateUri,
+                null,
+                null,
+                null,
+                null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         //Log.v(LOG_TAG, "onLoadFinished : Loader Finished!");
-        int position = 0;
+/*        int position = 0;
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             position++;
             cursor.moveToNext();
         }
-        //Log.v(LOG_TAG, "onLoadFinished : Loader query: " + String.valueOf(position));
+        Log.v(LOG_TAG, "onLoadFinished : Loader query: " + position);*/
         mAdapter.swapCursor(cursor);
         //mAdapter.notifyDataSetChanged();
     }

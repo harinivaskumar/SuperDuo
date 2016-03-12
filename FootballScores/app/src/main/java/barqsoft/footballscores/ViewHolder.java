@@ -8,22 +8,25 @@ import android.widget.TextView;
  * Created by yehya khaled on 2/26/2015.
  */
 public class ViewHolder {
-    public ImageView homeCrest;
+
     public TextView homeName;
-    public ImageView awayCrest;
-    public TextView awayName;
+    public ImageView homeCrest;
     public TextView score;
-    public TextView date;
+    public TextView time;
+    public TextView awayName;
+    public ImageView awayCrest;
 
     private double matchId;
 
     public ViewHolder(View view) {
         homeCrest = (ImageView) view.findViewById(R.id.home_crest);
         homeName = (TextView) view.findViewById(R.id.home_name);
+
+        score = (TextView) view.findViewById(R.id.score_textview);
+        time = (TextView) view.findViewById(R.id.time_textview);
+
         awayCrest = (ImageView) view.findViewById(R.id.away_crest);
         awayName = (TextView) view.findViewById(R.id.away_name);
-        score = (TextView) view.findViewById(R.id.score_textview);
-        date = (TextView) view.findViewById(R.id.data_textview);
     }
 
     public void setMatchId(double matchId){

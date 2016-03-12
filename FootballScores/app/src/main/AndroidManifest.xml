@@ -30,7 +30,7 @@
         <provider
             android:name=".data.ScoresProvider"
             android:authorities="barqsoft.footballscores"
-            android:exported="false"/>
+            android:exported="true"/>
         <service
             android:name=".service.MatchFetchService"
             android:exported="false"/>

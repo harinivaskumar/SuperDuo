@@ -1,5 +1,8 @@
 package barqsoft.footballscores;
 
+import android.graphics.Color;
+import android.widget.TextView;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
@@ -22,6 +25,7 @@ public class Utilities {
     private static final String WEST_HAM_UNITED_FC = "West Ham United FC";
 
     public static String getLeague(int league_num) {
+        //TODO change all these as String resources
         switch (league_num) {
             case BUNDESLIGA:
                 return "Bundesliga";
@@ -39,6 +43,7 @@ public class Utilities {
     }
 
     public static String getMatchDay(int matchDay, int leagueNum) {
+        //TODO change all these as String resources
         if (leagueNum == CHAMPIONS_LEAGUE) {
             if (matchDay <= 6) {
                 return "Group Stages, Match Day : 6";
@@ -58,10 +63,26 @@ public class Utilities {
 
     public static String getScores(int homeGoals, int awayGoals) {
         if (homeGoals < 0 || awayGoals < 0) {
-            return " - ";
-        } else {
-            return String.valueOf(homeGoals) + " - " + String.valueOf(awayGoals);
+            //TODO change this to a String Resource
+            return "Match yet to Start!";
         }
+        return String.valueOf(homeGoals) + " - " + String.valueOf(awayGoals);
+    }
+
+    public static float getScoreTextSize(TextView score,
+                                         int homeGoals, int awayGoals){
+        if (homeGoals < 0 || awayGoals < 0) {
+            //TODO change this to a float Resource
+            return 20.0f;
+        }
+        return 22.0f;
+    }
+
+    public static int getScoreTextColor(int homeGoals, int awayGoals) {
+        if (homeGoals < 0 || awayGoals < 0) {
+            return Color.RED;
+        }
+        return Color.BLACK;
     }
 
     public static int getTeamLogoByTeamName(String teamName) {

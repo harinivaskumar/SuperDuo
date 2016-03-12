@@ -17,15 +17,20 @@ public class ScoresAdapter extends CursorAdapter {
 
     private final String LOG_TAG = ScoresAdapter.class.getSimpleName();
 
-    private static final int COL_DATE = 1;
+    private static final int COL_MATCH_DATE = 1;
     private static final int COL_MATCH_TIME = 2;
-    private static final int COL_HOME = 3;
-    private static final int COL_AWAY = 4;
-    private static final int COL_LEAGUE = 5;
-    private static final int COL_HOME_GOALS = 6;
-    private static final int COL_AWAY_GOALS = 7;
-    private static final int COL_ID = 8;
-    private static final int COL_MATCH_DAY = 9;
+    private static final int COL_LEAGUE_ID = 3;
+    private static final int COL_MATCH_ID = 4;
+    private static final int COL_MATCH_DAY = 5;
+    private static final int COL_HOME_ID = 6;
+    private static final int COL_AWAY_ID = 7;
+    private static final int COL_HOME_NAME = 8;
+    private static final int COL_AWAY_NAME = 9;
+    private static final int COL_HOME_GOALS = 10;
+    private static final int COL_AWAY_GOALS = 11;
+    //TODO change the position of Home Crest and Away Crest Column indexes
+    private static final int COL_HOME_CREST = 12;
+    private static final int COL_AWAY_CREST = 13;
 
     private double mDetailedMatchId = 0;
 
@@ -70,19 +75,28 @@ public class ScoresAdapter extends CursorAdapter {
     }
 
     private void populateViewHolderWithInformation(Cursor cursor) {
+        //TODO change Home Crest name to URL and use Picaso to load images from internet
         mViewHolder.homeCrest.setImageResource(
-                Utilities.getTeamLogoByTeamName(cursor.getString(COL_HOME)));
-        mViewHolder.homeName.setText(cursor.getString(COL_HOME));
+                Utilities.getTeamLogoByTeamName(cursor.getString(COL_HOME_NAME)));
+        mViewHolder.homeName.setText(cursor.getString(COL_HOME_NAME));
 
+        //TODO change Away Crest name to URL and use Picaso to load images from internet
         mViewHolder.awayCrest.setImageResource(
-                Utilities.getTeamLogoByTeamName(cursor.getString(COL_AWAY)));
-        mViewHolder.awayName.setText(cursor.getString(COL_AWAY));
+                Utilities.getTeamLogoByTeamName(cursor.getString(COL_AWAY_NAME)));
+        mViewHolder.awayName.setText(cursor.getString(COL_AWAY_NAME));
 
-        mViewHolder.date.setText(cursor.getString(COL_MATCH_TIME));
+        mViewHolder.time.setText(cursor.getString(COL_MATCH_TIME));
         mViewHolder.score.setText(Utilities.getScores(
-                cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
+                cursor.getInt(COL_HOME_GOALS),
+                cursor.getInt(COL_AWAY_GOALS)));
+        mViewHolder.score.setTextSize(Utilities.getScoreTextSize(mViewHolder.score,
+                cursor.getInt(COL_HOME_GOALS),
+                cursor.getInt(COL_AWAY_GOALS)));
+        mViewHolder.score.setTextColor(Utilities.getScoreTextColor(
+                cursor.getInt(COL_HOME_GOALS),
+                cursor.getInt(COL_AWAY_GOALS)));
 
-        mViewHolder.setMatchId(cursor.getDouble(COL_ID));
+        mViewHolder.setMatchId(cursor.getDouble(COL_MATCH_ID));
 /*
         Log.v(LOG_TAG, "Home Name - " + mViewHolder.homeName.getText() +
                 " Vs. Away Name - " + mViewHolder.awayName.getText() +
@@ -101,11 +115,11 @@ public class ScoresAdapter extends CursorAdapter {
                         ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView leagueTextView = (TextView) newView.findViewById(R.id.league_textview);
-        leagueTextView.setText(Utilities.getLeague(cursor.getInt(COL_LEAGUE)));
+        leagueTextView.setText(Utilities.getLeague(cursor.getInt(COL_LEAGUE_ID)));
 
         TextView matchDayTextView = (TextView) newView.findViewById(R.id.matchday_textview);
         matchDayTextView.setText(Utilities.getMatchDay(
-                cursor.getInt(COL_MATCH_DAY), cursor.getInt(COL_LEAGUE)));
+                cursor.getInt(COL_MATCH_DAY), cursor.getInt(COL_LEAGUE_ID)));
 
         Button shareButton = (Button) newView.findViewById(R.id.share_button);
         shareButton.setOnClickListener(new View.OnClickListener() {
