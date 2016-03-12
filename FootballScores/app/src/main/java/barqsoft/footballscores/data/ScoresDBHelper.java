@@ -40,7 +40,7 @@ public class ScoresDBHelper extends SQLiteOpenHelper {
             + DatabaseContract.TeamsTable.CREST_URL + " TEXT NOT NULL,"
             + DatabaseContract.TeamsTable.LEAGUE_ID + " INTEGER NOT NULL,"
             + " UNIQUE (" + DatabaseContract.TeamsTable.TEAM_ID + ","
-            + DatabaseContract.TeamsTable.LEAGUE_ID + ") ON CONFLICT REPLACE"
+            + DatabaseContract.TeamsTable.LEAGUE_ID + ") ON CONFLICT IGNORE"
             + " );";
 
     final String DELETE_SCHEMA_TEAMS_TABLE = "DROP TABLE IF EXISTS " + DatabaseContract.TeamsTable.TABLE_NAME;

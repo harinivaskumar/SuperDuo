@@ -21,6 +21,8 @@ public class ScoresProvider extends ContentProvider {
 
     private static final int TEAMS = 200;
     private static final int TEAM_CREST_WITH_TEAM_ID = 201;
+    private static final int LEAGUES_COUNT = 202;
+    private static final int LEAGUE_COUNT = 203;
 
     private static final String sScoresDateSelection =
             DatabaseContract.ScoresTable.MATCH_DATE + " LIKE ?";
@@ -45,6 +47,8 @@ public class ScoresProvider extends ContentProvider {
 
         matcher.addURI(authority, DatabaseContract.PATH_TEAMS, TEAMS);
         matcher.addURI(authority, DatabaseContract.PATH_TEAMS + "/#", TEAM_CREST_WITH_TEAM_ID);
+        matcher.addURI(authority, DatabaseContract.PATH_TEAMS + "/*", LEAGUES_COUNT);
+        matcher.addURI(authority, DatabaseContract.PATH_TEAMS + "/*/#", LEAGUE_COUNT);
 
         //Log.d(LOG_TAG, "buildUriMatcher : " + matcher.);
         return matcher;
@@ -75,6 +79,10 @@ public class ScoresProvider extends ContentProvider {
             case TEAMS:
                 return DatabaseContract.TeamsTable.CONTENT_TYPE_DIR;
             case TEAM_CREST_WITH_TEAM_ID:
+                return DatabaseContract.TeamsTable.CONTENT_TYPE_ITEM;
+            case LEAGUES_COUNT:
+                return DatabaseContract.TeamsTable.CONTENT_TYPE_ITEM;
+            case LEAGUE_COUNT:
                 return DatabaseContract.TeamsTable.CONTENT_TYPE_ITEM;
             default:
                 throw new UnsupportedOperationException("getType : Unknown Uri - " + uri);
@@ -128,6 +136,22 @@ public class ScoresProvider extends ContentProvider {
                                 null,
                                 null,
                                 sortOrder);
+                break;
+            case LEAGUES_COUNT:
+                retCursor = mOpenHelper.getReadableDatabase()
+                        .rawQuery("SELECT COUNT(DISTINCT " + DatabaseContract.TeamsTable.LEAGUE_ID +
+                                " ) AS " + DatabaseContract.TeamsTable.TOTAL_LEAGUES_COUNT +
+                                " FROM " + DatabaseContract.TeamsTable.TABLE_NAME,
+                                null);
+                break;
+            case LEAGUE_COUNT:
+                retCursor = mOpenHelper.getReadableDatabase()
+                        .rawQuery("SELECT COUNT(DISTINCT " + DatabaseContract.TeamsTable.LEAGUE_ID +
+                                " ) AS " + DatabaseContract.TeamsTable.LEAGUE_COUNT +
+                                " FROM " + DatabaseContract.TeamsTable.TABLE_NAME +
+                                " WHERE " + DatabaseContract.TeamsTable.LEAGUE_ID +
+                                " = " + DatabaseContract.TeamsTable.getLeagueIdFromUri(uri),
+                                null);
                 break;
             default:
                 throw new UnsupportedOperationException("query : Unknown Uri - " + uri);

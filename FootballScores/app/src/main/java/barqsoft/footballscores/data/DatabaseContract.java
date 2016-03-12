@@ -63,6 +63,12 @@ public class DatabaseContract {
         public static final String CREST_URL = "crest_url";
         public static final String LEAGUE_ID = "league_id";
 
+        public static final String TOTAL_LEAGUES_COUNT = "TotalLeaguesCount";
+        public static final String LEAGUE_COUNT = "LeagueCount";
+
+        private static final String PATH_TEAM_ID = "team-id";
+        private static final String PATH_LEAGUE_COUNT = "league-count";
+
         public static final Uri TEAMS_BASE_CONTENT_URI = BASE_CONTENT_URI.buildUpon().
                 appendPath(PATH_TEAMS).build();
 
@@ -73,11 +79,28 @@ public class DatabaseContract {
 
         public static Uri buildTeamCrestWithTeamId() { //Item
             return TEAMS_BASE_CONTENT_URI.buildUpon()
-                    .appendPath("team-id")
+                    .appendPath(PATH_TEAM_ID)
                     .build();
         }
 
         public static String getTeamIdFromUri(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
+
+        public static Uri buildLeaguesCount(){
+            return TEAMS_BASE_CONTENT_URI.buildUpon()
+                    .appendPath(PATH_LEAGUE_COUNT)
+                    .build();
+        }
+
+        public static Uri buildLeagueCountWithLeagueId(String leagueId){
+            return TEAMS_BASE_CONTENT_URI.buildUpon()
+                    .appendPath(PATH_LEAGUE_COUNT)
+                    .appendQueryParameter(LEAGUE_ID, leagueId)
+                    .build();
+        }
+
+        public static String getLeagueIdFromUri(Uri uri){
             return uri.getPathSegments().get(1);
         }
     }
