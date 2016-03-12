@@ -16,6 +16,7 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.Utilities;
 import barqsoft.footballscores.data.DatabaseContract;
 import barqsoft.footballscores.data.MatchData;
 
@@ -91,8 +92,9 @@ public class MatchDataParserTask extends AsyncTask<Void, Void, Void>{
 
             for (int index = 0; index < getMatchCount(); index++) {
                 mMatchData = new MatchData();
-                populateMatchData(index);
-                matchesDataVector.add(mMatchData.getMatchAsContentValues());
+                if (populateMatchData(index)) {
+                    matchesDataVector.add(mMatchData.getMatchAsContentValues());
+                }
                 mMatchData = null;
             }
 
@@ -112,14 +114,33 @@ public class MatchDataParserTask extends AsyncTask<Void, Void, Void>{
         }
     }
 
-    private void populateMatchData(int matchIndex)
+    private boolean populateMatchData(int matchIndex)
             throws JSONException, ParseException, NullPointerException {
         JSONObject matchJSONObject = matchesJSONArray.getJSONObject(matchIndex);
+        JSONObject linksJSONObject = matchJSONObject.getJSONObject(LINKS);
 
-        parseMatchAndTeamIds(matchJSONObject.getJSONObject(LINKS), matchIndex);
+        if (!isLeagueIdWithInRange(linksJSONObject)){
+            return false;
+        }
+
+        parseMatchAndTeamIds(linksJSONObject, matchIndex);
         parseMatchDateTimeAndDay(matchJSONObject, matchIndex);
         parseTeamNames(matchJSONObject);
         parseMatchResults(matchJSONObject.getJSONObject(RESULT));
+        return true;
+    }
+
+    private boolean isLeagueIdWithInRange(JSONObject linksJSONObject) throws JSONException{
+        if (isRealData()) {
+            int leagueId = Integer.parseInt(linksJSONObject
+                    .getJSONObject(SOCCER_SEASON)
+                    .getString(HREF)
+                    .replace(SEASON_LINK, ""));
+
+            return (leagueId >= Utilities.START_LEAGUE_ID &&
+                    leagueId <= Utilities.END_LEAGUE_ID);
+        }
+        return true;
     }
 
     private void parseMatchAndTeamIds(JSONObject linksJSONObject,
