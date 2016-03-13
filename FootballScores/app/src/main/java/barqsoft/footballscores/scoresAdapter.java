@@ -3,6 +3,7 @@ package barqsoft.footballscores;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +78,8 @@ public class ScoresAdapter extends CursorAdapter {
                 Utilities.getTeamLogoByTeamName(cursor.getString(Utilities.COL_AWAY_NAME)));
         mViewHolder.awayName.setText(cursor.getString(Utilities.COL_AWAY_NAME));
 
+        setContentDescriptionForTeamCrests(cursor);
+
         mViewHolder.time.setText(cursor.getString(Utilities.COL_MATCH_TIME));
         mViewHolder.score.setText(Utilities.getScores(
                 cursor.getInt(Utilities.COL_HOME_GOALS),
@@ -94,6 +97,16 @@ public class ScoresAdapter extends CursorAdapter {
                 " Vs. Away Name - " + mViewHolder.awayName.getText() +
                 " & Match Id " + String.valueOf(mViewHolder.getMatchId()));
 */
+    }
+
+    private void setContentDescriptionForTeamCrests(Cursor cursor){
+        // Content Description for Non-text elements
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            mViewHolder.homeCrest.setContentDescription("Logo of " +
+                    cursor.getString(Utilities.COL_HOME_NAME) + " Crest!");
+            mViewHolder.awayCrest.setContentDescription("Logo of " +
+                    cursor.getString(Utilities.COL_AWAY_NAME) + " Crest!" );
+        }
     }
 
     private void loadTeamCrestImageIntoImageView(Context context, ImageView imageView,
