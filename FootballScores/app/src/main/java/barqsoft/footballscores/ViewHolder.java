@@ -7,22 +7,33 @@ import android.widget.TextView;
 /**
  * Created by yehya khaled on 2/26/2015.
  */
-public class ViewHolder
-{
-    public TextView home_name;
-    public TextView away_name;
+public class ViewHolder {
+
+    public TextView homeName;
+    public ImageView homeCrest;
     public TextView score;
-    public TextView date;
-    public ImageView home_crest;
-    public ImageView away_crest;
-    public double match_id;
-    public ViewHolder(View view)
-    {
-        home_name = (TextView) view.findViewById(R.id.home_name);
-        away_name = (TextView) view.findViewById(R.id.away_name);
-        score     = (TextView) view.findViewById(R.id.score_textview);
-        date      = (TextView) view.findViewById(R.id.data_textview);
-        home_crest = (ImageView) view.findViewById(R.id.home_crest);
-        away_crest = (ImageView) view.findViewById(R.id.away_crest);
+    public TextView time;
+    public TextView awayName;
+    public ImageView awayCrest;
+
+    private double matchId;
+
+    public ViewHolder(View view) {
+        homeCrest = (ImageView) view.findViewById(R.id.home_crest);
+        homeName = (TextView) view.findViewById(R.id.home_name);
+
+        score = (TextView) view.findViewById(R.id.score_textview);
+        time = (TextView) view.findViewById(R.id.time_textview);
+
+        awayCrest = (ImageView) view.findViewById(R.id.away_crest);
+        awayName = (TextView) view.findViewById(R.id.away_name);
+    }
+
+    public void setMatchId(double matchId){
+        this.matchId = matchId;
+    }
+
+    public double getMatchId(){
+        return matchId;
     }
 }
