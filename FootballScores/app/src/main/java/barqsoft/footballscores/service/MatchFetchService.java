@@ -16,6 +16,8 @@ import barqsoft.footballscores.tasks.FootBallSyncTask;
 public class MatchFetchService extends IntentService {
     public static final String LOG_TAG = MatchFetchService.class.getSimpleName();
 
+    public static final String ACTION_DATA_UPDATE = "barqsoft.footballscores.app.ACTION_DATA_UPDATED";
+
     public MatchFetchService() {
         super("MatchFetchService");
     }
@@ -24,6 +26,7 @@ public class MatchFetchService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         //fetchAllTeamDetails(); /* If required enable later */
         fetchAllMatchScoresData();
+        informDataUpdatedToWidgets();
     }
 
     private void fetchAllTeamDetails(){
@@ -103,5 +106,11 @@ public class MatchFetchService extends IntentService {
                 FootBallSyncTask.SCORE_FETCH_REQUEST,
                 timeFrame).execute();
         //Log.d(LOG_TAG, "fetchTeamDetails : SCORE_FETCH_REQUEST " + "initiated for TimeFrame[" + timeFrame + "]");
+    }
+
+    private void informDataUpdatedToWidgets(){
+        Intent newIntent = new Intent(ACTION_DATA_UPDATE)
+                .setPackage(getApplicationContext().getPackageName());
+        getApplicationContext().sendBroadcast(newIntent);
     }
 }
