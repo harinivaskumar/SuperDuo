@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Binder;
+import android.os.Build;
 import android.util.TypedValue;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
@@ -100,6 +101,12 @@ public class FootballScoresWidgetDataProvider implements RemoteViewsService.Remo
         remoteViews.setTextViewText(R.id.away_name, awayTeamName);
         remoteViews.setTextColor(R.id.away_name, Color.BLACK);
         remoteViews.setImageViewResource(R.id.away_crest, R.drawable.ic_launcher);
+
+        // Content Description for Non-text elements
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            remoteViews.setContentDescription(R.id.home_crest, "Logo of " + homeTeamName + " Crest!");
+            remoteViews.setContentDescription(R.id.away_crest, "Logo of " + awayTeamName + " Crest!" );
+        }
 
         final Intent fillInIntent = new Intent();
         remoteViews.setOnClickFillInIntent(R.id.scores_list_item, fillInIntent);
