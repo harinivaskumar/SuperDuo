@@ -35,7 +35,7 @@ public class MainPageFragment extends Fragment
 
     public MainPageFragment() {
         mFragmentDateStr = new String[1];
-        mFragmentDateStr[0] = "";
+        mFragmentDateStr[0] = Utilities.getRequiredLocalDate(Utilities.DATE_TODAY);
     }
 
     private void updateScores() {
