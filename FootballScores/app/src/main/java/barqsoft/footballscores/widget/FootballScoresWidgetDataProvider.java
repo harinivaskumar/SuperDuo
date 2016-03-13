@@ -101,6 +101,9 @@ public class FootballScoresWidgetDataProvider implements RemoteViewsService.Remo
         remoteViews.setTextColor(R.id.away_name, Color.BLACK);
         remoteViews.setImageViewResource(R.id.away_crest, R.drawable.ic_launcher);
 
+        final Intent fillInIntent = new Intent();
+        remoteViews.setOnClickFillInIntent(R.id.scores_list_item, fillInIntent);
+
         return remoteViews;
     }
 

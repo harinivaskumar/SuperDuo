@@ -1,6 +1,8 @@
 package barqsoft.footballscores.widget;
 
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
+import barqsoft.footballscores.MainActivity;
 import barqsoft.footballscores.R;
 
 /**
@@ -21,12 +24,24 @@ public class FootballScoresWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.football_scores_widget);
 
+        // Create an Intent to launch MainActivity
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.widget, pendingIntent);
+
         // Set up the collection
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setRemoteAdapter(context, remoteViews);
         } else {
             setRemoteAdapterV11(context, remoteViews);
         }
+
+        Intent clickIntentTemplate = new Intent(context, MainActivity.class);
+        PendingIntent clickPendingIntentTemplate = TaskStackBuilder
+                .create(context)
+                .addNextIntentWithParentStack(clickIntentTemplate)
+                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setPendingIntentTemplate(R.id.widget_list_view, clickPendingIntentTemplate);
         remoteViews.setEmptyView(R.id.widget_list_view, R.id.widget_empty_text_view);
 
         // Instruct the widget manager to update the widget
