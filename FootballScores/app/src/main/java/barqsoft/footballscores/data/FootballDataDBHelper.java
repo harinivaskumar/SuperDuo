@@ -3,7 +3,6 @@ package barqsoft.footballscores.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by yehya khaled on 2/25/2015.
@@ -54,7 +53,7 @@ public class FootballDataDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SCHEMA_SCORES_TABLE);
         db.execSQL(CREATE_SCHEMA_TEAMS_TABLE);
 
-        Log.d(LOG_TAG, "onCreate : Scores & Teams table Created! version - " + DATABASE_VERSION);
+        //Log.d(LOG_TAG, "onCreate : Scores & Teams table Created! version - " + DATABASE_VERSION);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class FootballDataDBHelper extends SQLiteOpenHelper {
         db.execSQL(DELETE_SCHEMA_SCORES_TABLE);
         db.execSQL(DELETE_SCHEMA_TEAMS_TABLE);
 
-        Log.d(LOG_TAG, "onUpgrade : Scores & Teams table Deleted!" +
-                " oldVersion - " + oldVersion + " & newVersion - " + newVersion);
+        //Log.d(LOG_TAG, "onUpgrade : Scores & Teams table Deleted!" +
+        //        " oldVersion - " + oldVersion + " & newVersion - " + newVersion);
     }
 }

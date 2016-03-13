@@ -43,7 +43,7 @@ public class MainPageFragment extends Fragment
             Log.e(LOG_TAG, "updateScores : You are Offline!");
             if (notifyAsToast == null) {
                 notifyAsToast = Toast.makeText(getActivity().getApplicationContext(),
-                        "You are Offline!", Toast.LENGTH_LONG);
+                        R.string.you_are_offline, Toast.LENGTH_LONG);
                 notifyAsToast.show();
             }
             return;

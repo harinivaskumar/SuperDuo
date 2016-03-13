@@ -19,7 +19,7 @@ public class FootballDataFetchService extends IntentService {
     public static final String ACTION_DATA_UPDATE = "barqsoft.footballscores.app.ACTION_DATA_UPDATED";
 
     public FootballDataFetchService() {
-        super("FootballDataFetchService");
+        super(LOG_TAG);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FootballDataFetchService extends IntentService {
             leaguesCount = cursor.getInt(cursor.getColumnIndex(
                     FootballDataContract.TeamsTable.TOTAL_LEAGUES_COUNT));
             cursor.close();
-            Log.v(LOG_TAG, "fetchAllTeamDetails : Total No of League's present - " + leaguesCount);
+            //Log.v(LOG_TAG, "fetchAllTeamDetails : Total No of League's present - " + leaguesCount);
         }
 
         if (leaguesCount < Utilities.TOTAL_LEAGUES_COUNT) {
@@ -77,8 +77,8 @@ public class FootballDataFetchService extends IntentService {
             leagueCount = cursor.getInt(cursor.getColumnIndex(
                     FootballDataContract.TeamsTable.TOTAL_LEAGUES_COUNT));
             cursor.close();
-            Log.v(LOG_TAG, "fetchTeamDetails :  No of LeagueId[" + leagueId +
-                    "] present - " + leagueCount);
+            //Log.v(LOG_TAG, "fetchTeamDetails :  No of LeagueId[" + leagueId +
+            //        "] present - " + leagueCount);
         }
 
         if (!Utilities.isNetworkAvailable(getApplicationContext())) {
@@ -90,7 +90,7 @@ public class FootballDataFetchService extends IntentService {
             new FootballSyncTask(getApplicationContext(),
                     FootballSyncTask.TEAM_FETCH_REQUEST,
                     leagueId).execute();
-            Log.d(LOG_TAG, "fetchTeamDetails : TEAM_FETCH_REQUEST " + "Now initiated for League[" + leagueId + "]");
+            //Log.d(LOG_TAG, "fetchTeamDetails : TEAM_FETCH_REQUEST " + "Now initiated for League[" + leagueId + "]");
         }else{
             //Log.d(LOG_TAG, "fetchTeamDetails : TEAM_FETCH_REQUEST " + "Already Done/InProgress for League[" + leagueId + "]");
         }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,16 +49,9 @@ public class ViewPagerFragment extends Fragment {
         return rootView;
     }
 
-    private long getDayInMillis(){
-        return (60 * /* Total Seconds in 1 Minute */
-                60 * /* Total Minutes in 1 Hour */
-                24 * /* Total Hours in 1 Day */
-                1000 /* One Second in millisecond */ );
-    }
-
     private long getRequiredTimeInMillis(int position){
         return (System.currentTimeMillis() +
-                ((position - 2) * getDayInMillis()));
+                ((position - 2) * DateUtils.DAY_IN_MILLIS));
     }
 
     public void setPagerHandler(View view){

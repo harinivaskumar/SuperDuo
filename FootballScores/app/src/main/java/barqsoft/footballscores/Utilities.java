@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -19,6 +18,8 @@ import barqsoft.footballscores.data.FootballDataContract;
  * Created by yehya khaled on 3/3/2015.
  */
 public class Utilities {
+
+    private static final String LOG_TAG = Utilities.class.getSimpleName();
 
     public static final String[] TIME_FRAMES = {
             "n2", //For next Two days from Today
@@ -77,6 +78,9 @@ public class Utilities {
     public static final int COL_AWAY_NAME = 9;
     public static final int COL_HOME_GOALS = 10;
     public static final int COL_AWAY_GOALS = 11;
+
+    private static final float TEXT_SIZE_SMALL = 20.0f;
+    private static final float TEXT_SIZE_LARGE = 22.0f;
 
     public static String getLeague(int leagueId) {
         //TODO change all these as String resources
@@ -162,9 +166,9 @@ public class Utilities {
                                          int homeGoals, int awayGoals){
         if (homeGoals < 0 || awayGoals < 0) {
             //TODO change this to a float Resource
-            return 20.0f;
+            return TEXT_SIZE_SMALL;
         }
-        return 22.0f;
+        return TEXT_SIZE_LARGE;
     }
 
     public static int getScoreTextColor(int homeGoals, int awayGoals) {
@@ -176,13 +180,15 @@ public class Utilities {
 
     // Added from StackOverFlow
     public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager)context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
             return true;
         }
-        Log.e("Utilities", "No Internet Connection available.");
+
+        //Log.e(LOG_TAG, "No Internet Connection available.");
         return false;
     }
 
@@ -197,13 +203,14 @@ public class Utilities {
                         null,
                         null,
                         null);
+
         if (cursor != null && cursor.getCount() >= 1){
             cursor.moveToFirst();
             teamCrestUrl = cursor.getString(0);
             cursor.close();
             return teamCrestUrl;
         }else {
-            //Log.e("Utilities", "getTeamCrestURLStr : Cursor Returned Empty!");
+            //Log.e(LOG_TAG, "getTeamCrestURLStr : Cursor Returned Empty!");
             if (cursor != null)
                 cursor.close();
             return null;
@@ -211,7 +218,8 @@ public class Utilities {
     }
 
     public static String getRequiredLocalDate (int whichDate){
-        Date newDate = new Date(System.currentTimeMillis() + (whichDate * DateUtils.DAY_IN_MILLIS));
+        Date newDate = new Date(System.currentTimeMillis() +
+                (whichDate * DateUtils.DAY_IN_MILLIS));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return simpleDateFormat.format(newDate);

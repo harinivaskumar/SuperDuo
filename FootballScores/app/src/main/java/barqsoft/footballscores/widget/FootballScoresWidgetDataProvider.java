@@ -22,6 +22,9 @@ public class FootballScoresWidgetDataProvider implements RemoteViewsService.Remo
 
     private static final String LOG_TAG = FootballScoresWidgetDataProvider.class.getSimpleName();
 
+    private static final String LOGO_ = "Logo of ";
+    private static final String CREST_ = " Crest!";
+
     private Cursor mMatchScoresCursor;
     private Context context;
     private Intent intent;
@@ -104,8 +107,8 @@ public class FootballScoresWidgetDataProvider implements RemoteViewsService.Remo
 
         // Content Description for Non-text elements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            remoteViews.setContentDescription(R.id.home_crest, "Logo of " + homeTeamName + " Crest!");
-            remoteViews.setContentDescription(R.id.away_crest, "Logo of " + awayTeamName + " Crest!" );
+            remoteViews.setContentDescription(R.id.home_crest, LOGO_ + homeTeamName + CREST_);
+            remoteViews.setContentDescription(R.id.away_crest, LOGO_ + awayTeamName + CREST_);
         }
 
         final Intent fillInIntent = new Intent();

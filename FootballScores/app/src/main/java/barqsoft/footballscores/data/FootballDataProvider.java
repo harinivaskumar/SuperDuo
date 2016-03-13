@@ -27,6 +27,17 @@ public class FootballDataProvider extends ContentProvider {
     private static final int LEAGUES_COUNT = 202;
     private static final int LEAGUE_COUNT = 203;
 
+    //Query Strings
+    private static final String sLeaguesCountQuery = "SELECT COUNT(DISTINCT " +
+            FootballDataContract.TeamsTable.LEAGUE_ID + " ) AS " +
+            FootballDataContract.TeamsTable.TOTAL_LEAGUES_COUNT + " FROM " +
+            FootballDataContract.TeamsTable.TABLE_NAME;
+    private static final String sLeagueCountQueryBase = "SELECT COUNT(DISTINCT " +
+            FootballDataContract.TeamsTable.LEAGUE_ID + " ) AS " +
+            FootballDataContract.TeamsTable.LEAGUE_COUNT + " FROM " +
+            FootballDataContract.TeamsTable.TABLE_NAME + " WHERE " +
+            FootballDataContract.TeamsTable.LEAGUE_ID + " = ";
+
     //Selection Strings
     private static final String sScoresMatchSelectionWithDate =
             FootballDataContract.ScoresTable.MATCH_DATE + " LIKE ?";
@@ -179,19 +190,11 @@ public class FootballDataProvider extends ContentProvider {
                 break;
             case LEAGUES_COUNT:
                 retCursor = mOpenHelper.getReadableDatabase()
-                        .rawQuery("SELECT COUNT(DISTINCT " + FootballDataContract.TeamsTable.LEAGUE_ID +
-                                " ) AS " + FootballDataContract.TeamsTable.TOTAL_LEAGUES_COUNT +
-                                " FROM " + FootballDataContract.TeamsTable.TABLE_NAME,
-                                null);
+                        .rawQuery(sLeaguesCountQuery, null);
                 break;
             case LEAGUE_COUNT:
                 retCursor = mOpenHelper.getReadableDatabase()
-                        .rawQuery("SELECT COUNT(DISTINCT " + FootballDataContract.TeamsTable.LEAGUE_ID +
-                                " ) AS " + FootballDataContract.TeamsTable.LEAGUE_COUNT +
-                                " FROM " + FootballDataContract.TeamsTable.TABLE_NAME +
-                                " WHERE " + FootballDataContract.TeamsTable.LEAGUE_ID +
-                                " = " + FootballDataContract.TeamsTable.getLeagueIdFromUri(uri),
-                                null);
+                        .rawQuery(getLeaguesCountQuery(uri), null);
                 break;
             default:
                 throw new UnsupportedOperationException("query : Unknown Uri - " + uri);
@@ -256,8 +259,8 @@ public class FootballDataProvider extends ContentProvider {
         return 0;
     }
 
-    private String getScoresDateSelectionArgsFromUri(Uri uri){
-
-        return null;
+    private String getLeaguesCountQuery(Uri uri){
+        return sLeagueCountQueryBase +
+                FootballDataContract.TeamsTable.getLeagueIdFromUri(uri);
     }
 }
