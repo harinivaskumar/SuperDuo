@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 /**
  * Created by yehya khaled on 2/25/2015.
@@ -51,7 +50,6 @@ public class DatabaseContract {
         }
 
         public static String getDateFromUriWithDate(Uri uri){
-            Log.d("Logging ", "I have URI as - " + uri);
             return uri.getPathSegments().get(2);
         }
 
