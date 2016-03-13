@@ -5,8 +5,13 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import barqsoft.footballscores.data.DatabaseContract;
 
@@ -56,6 +61,9 @@ public class Utilities {
     private static final String WEST_HAM_UNITED_FC = "West Ham United FC";
 
     private static final int CHAMPIONS_LEAGUE_NUM = 362;
+
+    public static final int DATE_PREVIOUS_DAY = -1;
+    public static final int DATE_NEXT_DAY = 1;
 
     public static String getLeague(int leagueId) {
         //TODO change all these as String resources
@@ -187,5 +195,12 @@ public class Utilities {
                 cursor.close();
             return null;
         }
+    }
+
+    public static String getRequiredLocalDate (int whichDate){
+        Date newDate = new Date(System.currentTimeMillis() + (whichDate * DateUtils.DAY_IN_MILLIS));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return simpleDateFormat.format(newDate);
     }
 }

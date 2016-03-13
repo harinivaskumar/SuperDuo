@@ -7,6 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import barqsoft.footballscores.Utilities;
 
 /**
  * Created by yehya khaled on 2/25/2015.
@@ -18,22 +21,41 @@ public class ScoresProvider extends ContentProvider {
     private static final int SCORES = 100;
     private static final int SCORES_WITH_DATE = 101;
     private static final int SCORE_WITH_MATCH_ID = 102;
+    private static final int SCORE_WITH_DATE_RANGE = 103;
 
     private static final int TEAMS = 200;
     private static final int TEAM_CREST_WITH_LEAGUE_AND_TEAM_ID = 201;
     private static final int LEAGUES_COUNT = 202;
     private static final int LEAGUE_COUNT = 203;
 
-    private static final String sScoresDateSelection =
+    //Projection Strings
+    private static final String[] sScoresMatchProjectionWithDateRange =
+            new String[] {
+                    DatabaseContract.ScoresTable.MATCH_TIME,
+                    DatabaseContract.ScoresTable.HOME_TEAM_ID,
+                    DatabaseContract.ScoresTable.HOME_TEAM_NAME,
+                    DatabaseContract.ScoresTable.HOME_TEAM_GOALS,
+                    DatabaseContract.ScoresTable.AWAY_TEAM_ID,
+                    DatabaseContract.ScoresTable.AWAY_TEAM_NAME,
+                    DatabaseContract.ScoresTable.AWAY_TEAM_GOALS
+            };
+
+    //Selection Strings
+    private static final String sScoresMatchSelectionWithDate =
             DatabaseContract.ScoresTable.MATCH_DATE + " LIKE ?";
-    private static final String sScoresMatchSelection =
+    private static final String sScoresMatchSelectionWithMatchId =
             DatabaseContract.ScoresTable.MATCH_ID + " = ?";
+    private static final String sScoresMatchSelectionWithDateRange =
+            DatabaseContract.ScoresTable.MATCH_DATE + " BETWEEN ? AND ?";
     private static final String sTeamCrestSelectionWithLeagueAndTeamId =
             DatabaseContract.TeamsTable.LEAGUE_ID + " = ? AND " +
             DatabaseContract.TeamsTable.TEAM_ID + " = ?" ;
 
-    private static final String sMatchDateSortOrder =
+    //Sort Order Strings
+    private static final String sScoresMatchSortOrderTime =
             DatabaseContract.ScoresTable.MATCH_TIME + " ASC";
+    private static final String sScoresMatchSortOrderDate =
+            DatabaseContract.ScoresTable.MATCH_DATE + " DESC";
 
     private static ScoresDBHelper mOpenHelper;
     private UriMatcher mUriMatcher = buildUriMatcher();
@@ -43,8 +65,11 @@ public class ScoresProvider extends ContentProvider {
         final String authority = DatabaseContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, DatabaseContract.PATH_SCORES, SCORES);
-        matcher.addURI(authority, DatabaseContract.PATH_SCORES + "/*", SCORES_WITH_DATE);
+        matcher.addURI(authority, DatabaseContract.PATH_SCORES + "/" +
+                DatabaseContract.ScoresTable.SINGLE_DAY + "/*", SCORES_WITH_DATE);
         matcher.addURI(authority, DatabaseContract.PATH_SCORES + "/#", SCORE_WITH_MATCH_ID);
+        matcher.addURI(authority, DatabaseContract.PATH_SCORES + "/" +
+                DatabaseContract.ScoresTable.THREE_DAYS, SCORE_WITH_DATE_RANGE);
 
         matcher.addURI(authority, DatabaseContract.PATH_TEAMS, TEAMS);
         matcher.addURI(authority, DatabaseContract.PATH_TEAMS + "/*/#/#", TEAM_CREST_WITH_LEAGUE_AND_TEAM_ID);
@@ -69,7 +94,7 @@ public class ScoresProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         final int matchUriId = mUriMatcher.match(uri);
-        //Log.d(LOG_TAG, "getType : matchUriId - " + matchUriId);
+        //Log.d(LOG_TAG, "getType : matchUriId - " + matchUriId + " for Uri - " + uri);
         switch (matchUriId) {
             case SCORES:
                 return DatabaseContract.ScoresTable.CONTENT_TYPE_DIR;
@@ -77,6 +102,8 @@ public class ScoresProvider extends ContentProvider {
                 return DatabaseContract.ScoresTable.CONTENT_TYPE_DIR;
             case SCORE_WITH_MATCH_ID:
                 return DatabaseContract.ScoresTable.CONTENT_TYPE_ITEM;
+            case SCORE_WITH_DATE_RANGE:
+                return DatabaseContract.ScoresTable.CONTENT_TYPE_DIR;
             case TEAMS:
                 return DatabaseContract.TeamsTable.CONTENT_TYPE_DIR;
             case TEAM_CREST_WITH_LEAGUE_AND_TEAM_ID:
@@ -101,25 +128,47 @@ public class ScoresProvider extends ContentProvider {
                                 projection, null, null, null, null, sortOrder);
                 break;
             case SCORES_WITH_DATE:
-                selectionArgs = new String[] {DatabaseContract.ScoresTable.getDateFromUri(uri)};
+                selectionArgs = new String[] {
+                        DatabaseContract.ScoresTable.getDateFromUriWithDate(uri)
+                };
                 retCursor = mOpenHelper.getReadableDatabase()
                         .query(DatabaseContract.ScoresTable.TABLE_NAME,
                                 projection,
-                                sScoresDateSelection,
+                                sScoresMatchSelectionWithDate,
                                 selectionArgs,
                                 null,
                                 null,
-                                sMatchDateSortOrder);
+                                sScoresMatchSortOrderTime);
                 break;
             case SCORE_WITH_MATCH_ID:
                 retCursor = mOpenHelper.getReadableDatabase()
                         .query(DatabaseContract.ScoresTable.TABLE_NAME,
                                 projection,
-                                sScoresMatchSelection,
+                                sScoresMatchSelectionWithMatchId,
                                 selectionArgs,
                                 null,
                                 null,
                                 sortOrder);
+                break;
+            case SCORE_WITH_DATE_RANGE:
+                selectionArgs = new String[] {
+                        Utilities.getRequiredLocalDate(Utilities.DATE_PREVIOUS_DAY),
+                        Utilities.getRequiredLocalDate(Utilities.DATE_NEXT_DAY)
+                };
+
+                Log.d(LOG_TAG, "query : Scores with Date Range - " +
+                        " PrevDate = " + Utilities.getRequiredLocalDate(Utilities.DATE_PREVIOUS_DAY) +
+                        " NextDate = " + Utilities.getRequiredLocalDate(Utilities.DATE_NEXT_DAY));
+
+                retCursor = mOpenHelper.getReadableDatabase()
+                        .query(DatabaseContract.ScoresTable.TABLE_NAME,
+                                //sScoresMatchProjectionWithDateRange,
+                                projection,
+                                sScoresMatchSelectionWithDateRange,
+                                selectionArgs,
+                                null,
+                                null,
+                                sScoresMatchSortOrderDate);
                 break;
             case TEAMS:
                 retCursor = mOpenHelper.getReadableDatabase()

@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Created by yehya khaled on 2/25/2015.
@@ -31,6 +32,9 @@ public class DatabaseContract {
         public static final String HOME_TEAM_GOALS = "home_goals";
         public static final String AWAY_TEAM_GOALS = "away_goals";
 
+        public static final String SINGLE_DAY = "singleDay";
+        public static final String THREE_DAYS = "threeDays";
+
         public static final Uri SCORES_BASE_CONTENT_URI = BASE_CONTENT_URI.buildUpon().
                 appendPath(PATH_SCORES).build();
 
@@ -41,16 +45,24 @@ public class DatabaseContract {
 
         public static Uri buildScoreWithDate(String date){//Dir with String
             return SCORES_BASE_CONTENT_URI.buildUpon()
+                    .appendPath(SINGLE_DAY)
                     .appendPath(date)
                     .build();
+        }
+
+        public static String getDateFromUriWithDate(Uri uri){
+            Log.d("Logging ", "I have URI as - " + uri);
+            return uri.getPathSegments().get(2);
         }
 
         public static Uri buildScoreWithMatchId(int matchId){//Item with integer
             return ContentUris.withAppendedId(SCORES_BASE_CONTENT_URI, matchId);
         }
 
-        public static String getDateFromUri(Uri uri){
-            return uri.getPathSegments().get(1);
+        public static Uri buildScoreWithDateRange(){//Dir with String
+            return SCORES_BASE_CONTENT_URI.buildUpon()
+                    .appendPath(THREE_DAYS)
+                    .build();
         }
     }
 
