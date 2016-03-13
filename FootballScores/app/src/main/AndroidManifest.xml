@@ -30,7 +30,7 @@
         </activity>
 
         <provider
-            android:name=".data.FootballDataDataProvider"
+            android:name=".data.FootballDataProvider"
             android:authorities="barqsoft.footballscores"
             android:exported="true" />
 

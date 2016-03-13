@@ -13,9 +13,9 @@ import barqsoft.footballscores.Utilities;
 /**
  * Created by yehya khaled on 2/25/2015.
  */
-public class FootballDataDataProvider extends ContentProvider {
+public class FootballDataProvider extends ContentProvider {
 
-    private static final String LOG_TAG = FootballDataDataProvider.class.getSimpleName();
+    private static final String LOG_TAG = FootballDataProvider.class.getSimpleName();
 
     private static final int SCORES = 100;
     private static final int SCORES_WITH_DATE = 101;
