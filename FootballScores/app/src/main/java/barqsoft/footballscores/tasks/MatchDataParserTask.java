@@ -17,7 +17,7 @@ import java.util.Vector;
 
 import barqsoft.footballscores.R;
 import barqsoft.footballscores.Utilities;
-import barqsoft.footballscores.data.DatabaseContract;
+import barqsoft.footballscores.data.FootballDataContract;
 import barqsoft.footballscores.data.MatchData;
 
 /**
@@ -232,7 +232,7 @@ public class MatchDataParserTask extends AsyncTask<Void, Void, Void>{
             ContentValues[] matchDataCV = new ContentValues[matchesDataVector.size()];
             matchesDataVector.toArray(matchDataCV);
             insertedCount = mContext.getContentResolver()
-                    .bulkInsert(DatabaseContract.ScoresTable.SCORES_BASE_CONTENT_URI, matchDataCV);
+                    .bulkInsert(FootballDataContract.ScoresTable.SCORES_BASE_CONTENT_URI, matchDataCV);
         }
         //Log.v(LOG_TAG,"insertMatchDataToDB : Successfully Inserted - " + insertedCount);
     }

@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import barqsoft.footballscores.data.DatabaseContract;
+import barqsoft.footballscores.data.FootballDataContract;
 
 /**
  * Created by yehya khaled on 3/3/2015.
@@ -192,7 +192,7 @@ public class Utilities {
 
         Cursor cursor = context
                 .getContentResolver()
-                .query(DatabaseContract.TeamsTable.buildTeamCrestWithTeamId(teamId, leagueId),
+                .query(FootballDataContract.TeamsTable.buildTeamCrestWithTeamId(teamId, leagueId),
                         null,
                         null,
                         null,

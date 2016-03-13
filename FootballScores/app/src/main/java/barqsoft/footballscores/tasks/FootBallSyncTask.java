@@ -19,9 +19,9 @@ import barqsoft.footballscores.Utilities;
 /**
  * Created by Hari Nivas Kumar R P on 3/12/2016.
  */
-public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
+public class FootballSyncTask extends AsyncTask<Void, Void, Void> {
 
-    private final String LOG_TAG = FootBallSyncTask.class.getSimpleName();
+    private final String LOG_TAG = FootballSyncTask.class.getSimpleName();
 
     private final String TEAMS_BASE_URL = "http://api.football-data.org/alpha/soccerseasons/"; //Team Base URL
     private final String TEAMS_QUERY_PARAM = "/teams";
@@ -36,7 +36,7 @@ public class FootBallSyncTask extends AsyncTask<Void, Void, Void> {
     private String leagueId, timeFrame, jsonDataStr;
     private Context mContext;
 
-    public FootBallSyncTask(Context context, int requestType,
+    public FootballSyncTask(Context context, int requestType,
                             String leagueIdOrTimeFrame){
         mContext = context;
         setRequestType(requestType);

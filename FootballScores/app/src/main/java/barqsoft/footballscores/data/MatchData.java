@@ -32,7 +32,7 @@ public class MatchData {
 
     public void setMatchDate(String matchDate) {
         this.matchDate = matchDate;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.MATCH_DATE, getMatchDate());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.MATCH_DATE, getMatchDate());
     }
 
     public String getMatchTime() {
@@ -41,7 +41,7 @@ public class MatchData {
 
     public void setMatchTime(String matchTime) {
         this.matchTime = matchTime;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.MATCH_TIME, getMatchTime());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.MATCH_TIME, getMatchTime());
     }
 
     public String getLeagueId() {
@@ -50,7 +50,7 @@ public class MatchData {
 
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.LEAGUE_ID, getLeagueId());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.LEAGUE_ID, getLeagueId());
     }
 
     public String getMatchId() {
@@ -59,7 +59,7 @@ public class MatchData {
 
     public void setMatchId(String matchId) {
         this.matchId = matchId;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.MATCH_ID, getMatchId());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.MATCH_ID, getMatchId());
     }
 
     public String getMatchDay() {
@@ -68,7 +68,7 @@ public class MatchData {
 
     public void setMatchDay(String matchDay) {
         this.matchDay = matchDay;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.MATCH_DAY, getMatchDay());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.MATCH_DAY, getMatchDay());
     }
 
     public String getHomeTeamName() {
@@ -77,7 +77,7 @@ public class MatchData {
 
     public void setHomeTeamName(String homeTeamName) {
         this.homeTeamName = homeTeamName;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.HOME_TEAM_NAME, getHomeTeamName());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.HOME_TEAM_NAME, getHomeTeamName());
     }
 
     public String getAwayTeamName() {
@@ -86,7 +86,7 @@ public class MatchData {
 
     public void setAwayTeamName(String awayTeamName) {
         this.awayTeamName = awayTeamName;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.AWAY_TEAM_NAME, getAwayTeamName());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.AWAY_TEAM_NAME, getAwayTeamName());
     }
 
     public String getHomeTeamId() {
@@ -95,7 +95,7 @@ public class MatchData {
 
     public void setHomeTeamId(String homeTeamId) {
         this.homeTeamId = homeTeamId;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.HOME_TEAM_ID, getHomeTeamId());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.HOME_TEAM_ID, getHomeTeamId());
     }
 
     public String getAwayTeamId() {
@@ -104,7 +104,7 @@ public class MatchData {
 
     public void setAwayTeamId(String awayTeamId) {
         this.awayTeamId = awayTeamId;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.AWAY_TEAM_ID, getAwayTeamId());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.AWAY_TEAM_ID, getAwayTeamId());
     }
 
     public String getHomeTeamGoals() {
@@ -113,7 +113,7 @@ public class MatchData {
 
     public void setHomeTeamGoals(String homeTeamGoals) {
         this.homeTeamGoals = homeTeamGoals;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.HOME_TEAM_GOALS, getHomeTeamGoals());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.HOME_TEAM_GOALS, getHomeTeamGoals());
     }
 
     public String getAwayTeamGoals() {
@@ -122,6 +122,6 @@ public class MatchData {
 
     public void setAwayTeamGoals(String awayTeamGoals) {
         this.awayTeamGoals = awayTeamGoals;
-        matchAsContentValues.put(DatabaseContract.ScoresTable.AWAY_TEAM_GOALS, getAwayTeamGoals());
+        matchAsContentValues.put(FootballDataContract.ScoresTable.AWAY_TEAM_GOALS, getAwayTeamGoals());
     }
 }

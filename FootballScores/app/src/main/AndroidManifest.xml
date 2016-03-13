@@ -30,12 +30,12 @@
         </activity>
 
         <provider
-            android:name=".data.ScoresProvider"
+            android:name=".data.FootballDataDataProvider"
             android:authorities="barqsoft.footballscores"
             android:exported="true" />
 
         <service
-            android:name=".service.MatchFetchService"
+            android:name=".service.FootballDataFetchService"
             android:exported="true" />
 
         <receiver

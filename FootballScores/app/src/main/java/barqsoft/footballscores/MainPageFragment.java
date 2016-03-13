@@ -16,8 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import barqsoft.footballscores.data.DatabaseContract;
-import barqsoft.footballscores.service.MatchFetchService;
+import barqsoft.footballscores.data.FootballDataContract;
+import barqsoft.footballscores.service.FootballDataFetchService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -49,7 +49,7 @@ public class MainPageFragment extends Fragment
             return;
         }
 
-        Intent matchFetchServiceIntent = new Intent(getActivity(), MatchFetchService.class);
+        Intent matchFetchServiceIntent = new Intent(getActivity(), FootballDataFetchService.class);
         getActivity().startService(matchFetchServiceIntent);
         //Log.d(LOG_TAG, "updateScores : Started MatchFetch intent Service!");
     }
@@ -95,7 +95,7 @@ public class MainPageFragment extends Fragment
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         //Log.v(LOG_TAG, "onCreateLoader : Loader Started!");
-        Uri scoresForDateUri = DatabaseContract.ScoresTable
+        Uri scoresForDateUri = FootballDataContract.ScoresTable
                 .buildScoreWithDate(getFragmentDateStr(0));
         return new CursorLoader(getActivity(),
                 scoresForDateUri,

@@ -13,7 +13,7 @@ import android.widget.RemoteViewsService;
 
 import barqsoft.footballscores.R;
 import barqsoft.footballscores.Utilities;
-import barqsoft.footballscores.data.DatabaseContract;
+import barqsoft.footballscores.data.FootballDataContract;
 
 /**
  * Created by Hari Nivas Kumar R P on 3/13/2016.
@@ -44,7 +44,7 @@ public class FootballScoresWidgetDataProvider implements RemoteViewsService.Remo
         final long identityToken = Binder.clearCallingIdentity();
 
         mMatchScoresCursor = context.getContentResolver().query(
-                DatabaseContract.ScoresTable.buildScoreWithDateRange(),
+                FootballDataContract.ScoresTable.buildScoreWithDateRange(),
                 null, null, null, null);
 
         Binder.restoreCallingIdentity(identityToken);

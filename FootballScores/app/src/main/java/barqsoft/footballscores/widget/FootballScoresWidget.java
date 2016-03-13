@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
 
 import barqsoft.footballscores.MainActivity;
 import barqsoft.footballscores.R;
-import barqsoft.footballscores.service.MatchFetchService;
+import barqsoft.footballscores.service.FootballDataFetchService;
 
 /**
  * Implementation of App Widget functionality.
@@ -93,7 +93,7 @@ public class FootballScoresWidget extends AppWidgetProvider {
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         super.onReceive(context, intent);
-        if (MatchFetchService.ACTION_DATA_UPDATE.equals(intent.getAction())) {
+        if (FootballDataFetchService.ACTION_DATA_UPDATE.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));

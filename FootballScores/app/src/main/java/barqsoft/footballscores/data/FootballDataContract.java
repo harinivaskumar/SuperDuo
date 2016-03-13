@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 /**
  * Created by yehya khaled on 2/25/2015.
  */
-public class DatabaseContract {
+public class FootballDataContract {
     public static final String PATH_SCORES = "scores";
     public static final String PATH_TEAMS = "teams";
 

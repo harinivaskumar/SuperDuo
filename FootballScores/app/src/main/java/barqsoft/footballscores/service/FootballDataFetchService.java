@@ -7,19 +7,19 @@ import android.net.Uri;
 import android.util.Log;
 
 import barqsoft.footballscores.Utilities;
-import barqsoft.footballscores.data.DatabaseContract;
-import barqsoft.footballscores.tasks.FootBallSyncTask;
+import barqsoft.footballscores.data.FootballDataContract;
+import barqsoft.footballscores.tasks.FootballSyncTask;
 
 /**
  * Created by yehya khaled on 3/2/2015.
  */
-public class MatchFetchService extends IntentService {
-    public static final String LOG_TAG = MatchFetchService.class.getSimpleName();
+public class FootballDataFetchService extends IntentService {
+    public static final String LOG_TAG = FootballDataFetchService.class.getSimpleName();
 
     public static final String ACTION_DATA_UPDATE = "barqsoft.footballscores.app.ACTION_DATA_UPDATED";
 
-    public MatchFetchService() {
-        super("MatchFetchService");
+    public FootballDataFetchService() {
+        super("FootballDataFetchService");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class MatchFetchService extends IntentService {
     private void fetchAllTeamDetails(){
         int leaguesCount = 0;
 
-        Uri leaguesCountUri = DatabaseContract.TeamsTable
+        Uri leaguesCountUri = FootballDataContract.TeamsTable
                 .buildLeaguesCount();
 
         Cursor cursor = getApplicationContext()
@@ -42,7 +42,7 @@ public class MatchFetchService extends IntentService {
         if (cursor != null) {
             cursor.moveToFirst();
             leaguesCount = cursor.getInt(cursor.getColumnIndex(
-                    DatabaseContract.TeamsTable.TOTAL_LEAGUES_COUNT));
+                    FootballDataContract.TeamsTable.TOTAL_LEAGUES_COUNT));
             cursor.close();
             Log.v(LOG_TAG, "fetchAllTeamDetails : Total No of League's present - " + leaguesCount);
         }
@@ -65,7 +65,7 @@ public class MatchFetchService extends IntentService {
     private void fetchTeamDetails(String leagueId){
         int leagueCount = 0;
 
-        Uri leagueCountUri = DatabaseContract.TeamsTable
+        Uri leagueCountUri = FootballDataContract.TeamsTable
                 .buildLeagueCountWithLeagueId(leagueId);
 
         Cursor cursor = getApplicationContext()
@@ -75,7 +75,7 @@ public class MatchFetchService extends IntentService {
         if (cursor != null) {
             cursor.moveToFirst();
             leagueCount = cursor.getInt(cursor.getColumnIndex(
-                    DatabaseContract.TeamsTable.TOTAL_LEAGUES_COUNT));
+                    FootballDataContract.TeamsTable.TOTAL_LEAGUES_COUNT));
             cursor.close();
             Log.v(LOG_TAG, "fetchTeamDetails :  No of LeagueId[" + leagueId +
                     "] present - " + leagueCount);
@@ -87,8 +87,8 @@ public class MatchFetchService extends IntentService {
         }
 
         if (leagueCount == 0){
-            new FootBallSyncTask(getApplicationContext(),
-                    FootBallSyncTask.TEAM_FETCH_REQUEST,
+            new FootballSyncTask(getApplicationContext(),
+                    FootballSyncTask.TEAM_FETCH_REQUEST,
                     leagueId).execute();
             Log.d(LOG_TAG, "fetchTeamDetails : TEAM_FETCH_REQUEST " + "Now initiated for League[" + leagueId + "]");
         }else{
@@ -102,8 +102,8 @@ public class MatchFetchService extends IntentService {
             return;
         }
 
-        new FootBallSyncTask(getApplicationContext(),
-                FootBallSyncTask.SCORE_FETCH_REQUEST,
+        new FootballSyncTask(getApplicationContext(),
+                FootballSyncTask.SCORE_FETCH_REQUEST,
                 timeFrame).execute();
         //Log.d(LOG_TAG, "fetchTeamDetails : SCORE_FETCH_REQUEST " + "initiated for TimeFrame[" + timeFrame + "]");
     }

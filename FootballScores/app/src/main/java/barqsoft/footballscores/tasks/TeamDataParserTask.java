@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import java.util.Vector;
 
-import barqsoft.footballscores.data.DatabaseContract;
+import barqsoft.footballscores.data.FootballDataContract;
 import barqsoft.footballscores.data.TeamData;
 
 /**
@@ -106,7 +106,7 @@ public class TeamDataParserTask extends AsyncTask<Void, Void, Void> {
             ContentValues[] teamDataCV = new ContentValues[teamsDataVector.size()];
             teamsDataVector.toArray(teamDataCV);
             insertedCount = mContext.getContentResolver()
-                    .bulkInsert(DatabaseContract.TeamsTable.TEAMS_BASE_CONTENT_URI, teamDataCV);
+                    .bulkInsert(FootballDataContract.TeamsTable.TEAMS_BASE_CONTENT_URI, teamDataCV);
         }
         //Log.v(LOG_TAG,"insertTeamDataToDB : Successfully Inserted - " + insertedCount);
     }

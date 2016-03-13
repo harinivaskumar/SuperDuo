@@ -30,7 +30,7 @@ public class TeamData {
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
-        teamAsContentValues.put(DatabaseContract.TeamsTable.TEAM_ID, getTeamId());
+        teamAsContentValues.put(FootballDataContract.TeamsTable.TEAM_ID, getTeamId());
     }
 
     public String getLeagueId() {
@@ -39,7 +39,7 @@ public class TeamData {
 
     public void setLeagueId(String leagueId) {
         this.leagueId = leagueId;
-        teamAsContentValues.put(DatabaseContract.TeamsTable.LEAGUE_ID, getLeagueId());
+        teamAsContentValues.put(FootballDataContract.TeamsTable.LEAGUE_ID, getLeagueId());
     }
 
     public String getTeamName() {
@@ -48,7 +48,7 @@ public class TeamData {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
-        teamAsContentValues.put(DatabaseContract.TeamsTable.NAME, getTeamName());
+        teamAsContentValues.put(FootballDataContract.TeamsTable.NAME, getTeamName());
     }
 
     public String getShortName() {
@@ -57,7 +57,7 @@ public class TeamData {
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
-        teamAsContentValues.put(DatabaseContract.TeamsTable.SHORT_NAME, getShortName());
+        teamAsContentValues.put(FootballDataContract.TeamsTable.SHORT_NAME, getShortName());
     }
 
     public String getCrestUrl() {
@@ -66,6 +66,6 @@ public class TeamData {
 
     public void setCrestUrl(String crestUrl) {
         this.crestUrl = crestUrl;
-        teamAsContentValues.put(DatabaseContract.TeamsTable.CREST_URL, getCrestUrl());
+        teamAsContentValues.put(FootballDataContract.TeamsTable.CREST_URL, getCrestUrl());
     }
 }
