@@ -63,7 +63,20 @@ public class Utilities {
     private static final int CHAMPIONS_LEAGUE_NUM = 362;
 
     public static final int DATE_PREVIOUS_DAY = -1;
+    public static final int DATE_TODAY = 0;
     public static final int DATE_NEXT_DAY = 1;
+
+    public static final int COL_MATCH_DATE = 1;
+    public static final int COL_MATCH_TIME = 2;
+    public static final int COL_LEAGUE_ID = 3;
+    public static final int COL_MATCH_ID = 4;
+    public static final int COL_MATCH_DAY = 5;
+    public static final int COL_HOME_ID = 6;
+    public static final int COL_AWAY_ID = 7;
+    public static final int COL_HOME_NAME = 8;
+    public static final int COL_AWAY_NAME = 9;
+    public static final int COL_HOME_GOALS = 10;
+    public static final int COL_AWAY_GOALS = 11;
 
     public static String getLeague(int leagueId) {
         //TODO change all these as String resources

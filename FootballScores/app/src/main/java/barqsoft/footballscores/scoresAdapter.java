@@ -20,18 +20,6 @@ public class ScoresAdapter extends CursorAdapter {
 
     private final String LOG_TAG = ScoresAdapter.class.getSimpleName();
 
-    private static final int COL_MATCH_DATE = 1;
-    private static final int COL_MATCH_TIME = 2;
-    private static final int COL_LEAGUE_ID = 3;
-    private static final int COL_MATCH_ID = 4;
-    private static final int COL_MATCH_DAY = 5;
-    private static final int COL_HOME_ID = 6;
-    private static final int COL_AWAY_ID = 7;
-    private static final int COL_HOME_NAME = 8;
-    private static final int COL_AWAY_NAME = 9;
-    private static final int COL_HOME_GOALS = 10;
-    private static final int COL_AWAY_GOALS = 11;
-
     private double mDetailedMatchId = 0;
 
     private String FOOTBALL_SCORES_HASHTAG = "#FootballScores";
@@ -77,30 +65,30 @@ public class ScoresAdapter extends CursorAdapter {
     private void populateViewHolderWithInformation(Context context, Cursor cursor) {
         loadTeamCrestImageIntoImageView(context,
                 mViewHolder.homeCrest,
-                cursor.getString(COL_HOME_ID),
-                cursor.getString(COL_LEAGUE_ID),
-                Utilities.getTeamLogoByTeamName(cursor.getString(COL_HOME_NAME)));
-        mViewHolder.homeName.setText(cursor.getString(COL_HOME_NAME));
+                cursor.getString(Utilities.COL_HOME_ID),
+                cursor.getString(Utilities.COL_LEAGUE_ID),
+                Utilities.getTeamLogoByTeamName(cursor.getString(Utilities.COL_HOME_NAME)));
+        mViewHolder.homeName.setText(cursor.getString(Utilities.COL_HOME_NAME));
 
         loadTeamCrestImageIntoImageView(context,
                 mViewHolder.awayCrest,
-                cursor.getString(COL_AWAY_ID),
-                cursor.getString(COL_LEAGUE_ID),
-                Utilities.getTeamLogoByTeamName(cursor.getString(COL_AWAY_NAME)));
-        mViewHolder.awayName.setText(cursor.getString(COL_AWAY_NAME));
+                cursor.getString(Utilities.COL_AWAY_ID),
+                cursor.getString(Utilities.COL_LEAGUE_ID),
+                Utilities.getTeamLogoByTeamName(cursor.getString(Utilities.COL_AWAY_NAME)));
+        mViewHolder.awayName.setText(cursor.getString(Utilities.COL_AWAY_NAME));
 
-        mViewHolder.time.setText(cursor.getString(COL_MATCH_TIME));
+        mViewHolder.time.setText(cursor.getString(Utilities.COL_MATCH_TIME));
         mViewHolder.score.setText(Utilities.getScores(
-                cursor.getInt(COL_HOME_GOALS),
-                cursor.getInt(COL_AWAY_GOALS)));
+                cursor.getInt(Utilities.COL_HOME_GOALS),
+                cursor.getInt(Utilities.COL_AWAY_GOALS)));
         mViewHolder.score.setTextSize(Utilities.getScoreTextSize(mViewHolder.score,
-                cursor.getInt(COL_HOME_GOALS),
-                cursor.getInt(COL_AWAY_GOALS)));
+                cursor.getInt(Utilities.COL_HOME_GOALS),
+                cursor.getInt(Utilities.COL_AWAY_GOALS)));
         mViewHolder.score.setTextColor(Utilities.getScoreTextColor(
-                cursor.getInt(COL_HOME_GOALS),
-                cursor.getInt(COL_AWAY_GOALS)));
+                cursor.getInt(Utilities.COL_HOME_GOALS),
+                cursor.getInt(Utilities.COL_AWAY_GOALS)));
 
-        mViewHolder.setMatchId(cursor.getDouble(COL_MATCH_ID));
+        mViewHolder.setMatchId(cursor.getDouble(Utilities.COL_MATCH_ID));
 /*
         Log.v(LOG_TAG, "Home Name - " + mViewHolder.homeName.getText() +
                 " Vs. Away Name - " + mViewHolder.awayName.getText() +
@@ -145,11 +133,11 @@ public class ScoresAdapter extends CursorAdapter {
                         ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView leagueTextView = (TextView) newView.findViewById(R.id.league_textview);
-        leagueTextView.setText(Utilities.getLeague(cursor.getInt(COL_LEAGUE_ID)));
+        leagueTextView.setText(Utilities.getLeague(cursor.getInt(Utilities.COL_LEAGUE_ID)));
 
         TextView matchDayTextView = (TextView) newView.findViewById(R.id.matchday_textview);
         matchDayTextView.setText(Utilities.getMatchDay(
-                cursor.getInt(COL_MATCH_DAY), cursor.getInt(COL_LEAGUE_ID)));
+                cursor.getInt(Utilities.COL_MATCH_DAY), cursor.getInt(Utilities.COL_LEAGUE_ID)));
 
         Button shareButton = (Button) newView.findViewById(R.id.share_button);
         shareButton.setOnClickListener(new View.OnClickListener() {
