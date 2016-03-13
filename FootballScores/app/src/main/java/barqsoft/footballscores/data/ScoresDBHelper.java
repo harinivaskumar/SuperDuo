@@ -12,7 +12,7 @@ public class ScoresDBHelper extends SQLiteOpenHelper {
     private final String LOG_TAG = ScoresDBHelper.class.getSimpleName();
 
     public static final String DATABASE_NAME = "Scores.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 1;
 
     final String CREATE_SCHEMA_SCORES_TABLE = "CREATE TABLE " + DatabaseContract.ScoresTable.TABLE_NAME + " ("
             + DatabaseContract.ScoresTable._ID + " INTEGER PRIMARY KEY,"
