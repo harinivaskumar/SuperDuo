@@ -8,4 +8,12 @@
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="add_book_top_margin">20dp</dimen>
+    <dimen name="add_book_start_margin">20dp</dimen>
+    <dimen name="add_book_top_margin_title">25dp</dimen>
+    <dimen name="add_book_end_margin">20dp</dimen>
+    <dimen name="full_book_padding_book_title">20dp</dimen>
+    <dimen name="full_book_layout_margin">10dp</dimen>
+    <dimen name="full_book_top_margin">10dp</dimen>
+    <dimen name="add_book_container1_padding">10dp</dimen>
 </resources>

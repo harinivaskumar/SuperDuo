@@ -31,8 +31,9 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     private final int LOADER_ID = 10;
     private View rootView;
     private String ean;
-    private String bookTitle;
-    private ShareActionProvider shareActionProvider;
+    private String mBookTitle;
+    private ShareActionProvider mShareActionProvider;
+    private Intent mShareIntent;
 
     public BookDetail() {
     }
@@ -71,7 +72,10 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         inflater.inflate(R.menu.book_detail, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        //Log.v(LOG_TAG, "onCreateOptionsMenu : invoking createAndSetShareIntent!");
+        createAndSetShareIntent();
     }
 
     @Override
@@ -92,14 +96,11 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
             return;
         }
 
-        bookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
-        ((TextView) rootView.findViewById(R.id.fullBookTitle)).setText(bookTitle);
+        mBookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
+        ((TextView) rootView.findViewById(R.id.fullBookTitle)).setText(mBookTitle);
 
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text) + bookTitle);
-        shareActionProvider.setShareIntent(shareIntent);
+        Log.v(LOG_TAG, "onLoadFinished : invoking createAndSetShareIntent!");
+        createAndSetShareIntent();
 
         String bookSubTitle = data.getString(
                 data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
@@ -145,6 +146,28 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         super.onDestroyView();
         if (MainActivity.IS_TABLET && rootView.findViewById(R.id.right_container) == null) {
             getActivity().getSupportFragmentManager().popBackStack();
+        }
+    }
+
+    private void createAndSetShareIntent(){
+        if (mBookTitle != null) {
+            if (mShareIntent != null){
+                //Log.w(LOG_TAG, "createAndSetShareIntent : mShareIntent already Created");
+            }else{
+                mShareIntent = new Intent(Intent.ACTION_SEND);
+                mShareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+                mShareIntent.setType("text/plain");
+                mShareIntent.putExtra(Intent.EXTRA_TEXT,
+                        getString(R.string.share_text) + mBookTitle);
+            }
+
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(mShareIntent);
+            } else {
+                //Log.e(LOG_TAG, "createAndSetShareIntent : mShareActionProvider is null!");
+            }
+        }else{
+            //Log.e(LOG_TAG, "createAndSetShareIntent : mBookTitle is null!");
         }
     }
 }
