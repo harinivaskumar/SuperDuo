@@ -74,7 +74,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
         MenuItem menuItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
-        Log.v(LOG_TAG, "onCreateOptionsMenu : invoking createAndSetShareIntent!");
+        //Log.v(LOG_TAG, "onCreateOptionsMenu : invoking createAndSetShareIntent!");
         createAndSetShareIntent();
     }
 
@@ -152,7 +152,7 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     private void createAndSetShareIntent(){
         if (mBookTitle != null) {
             if (mShareIntent != null){
-                Log.w(LOG_TAG, "createAndSetShareIntent : mShareIntent already Created");
+                //Log.w(LOG_TAG, "createAndSetShareIntent : mShareIntent already Created");
             }else{
                 mShareIntent = new Intent(Intent.ACTION_SEND);
                 mShareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
@@ -164,10 +164,10 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
             if (mShareActionProvider != null) {
                 mShareActionProvider.setShareIntent(mShareIntent);
             } else {
-                Log.e(LOG_TAG, "createAndSetShareIntent : mShareActionProvider is null!");
+                //Log.e(LOG_TAG, "createAndSetShareIntent : mShareActionProvider is null!");
             }
         }else{
-            Log.e(LOG_TAG, "createAndSetShareIntent : mBookTitle is null!");
+            //Log.e(LOG_TAG, "createAndSetShareIntent : mBookTitle is null!");
         }
     }
 }
