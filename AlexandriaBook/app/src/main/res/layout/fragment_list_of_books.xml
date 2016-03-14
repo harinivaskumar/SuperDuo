@@ -31,19 +31,19 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_toStartOf="@+id/searchButton"
+            android:hint="@string/input_hint"
             android:inputType="text"
-            android:saveEnabled="true"
-            android:hint="@string/input_hint" />
+            android:saveEnabled="true" />
 
         <ListView
             android:id="@+id/listOfBooks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignEnd="@+id/searchButton"
-            android:layout_toStartOf="@id/searchButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/searchText"
-            android:layout_marginEnd="0dp" />
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@id/searchButton" />
     </RelativeLayout>
 </FrameLayout>
