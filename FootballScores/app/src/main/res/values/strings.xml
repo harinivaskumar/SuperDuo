@@ -23,4 +23,7 @@
     <string name="title_widget_detail">Soccer Details</string>
 
     <string name="you_are_offline">You are Offline!</string>
+    <string name="share">Share</string>
+    <string name="home_crest">Home Crest</string>
+    <string name="away_crest">Away Crest</string>
 </resources>
